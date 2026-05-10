@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cookjohn/zotero-mcp.git"
+    "url": "git+https://github.com/oirehT/zotero-mcp-hardened.git"
   },
   "author": "cookjohn",
   "bugs": {
-    "url": "https://github.com/cookjohn/zotero-mcp/issues"
+    "url": "https://github.com/oirehT/zotero-mcp-hardened/issues"
   },
-  "homepage": "https://github.com/cookjohn/zotero-mcp#readme",
+  "homepage": "https://github.com/oirehT/zotero-mcp-hardened#readme",
   "license": "MIT",
   "scripts": {
     "start": "zotero-plugin serve",

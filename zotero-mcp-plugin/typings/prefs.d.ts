@@ -7,8 +7,10 @@
 declare namespace _ZoteroTypes {
   interface Prefs {
     PluginPrefsMap: {
-      "mcp.server.enabled": boolean;
       "mcp.server.port": number;
+      "mcp.server.enabled": boolean;
+      "mcp.server.allowRemote": boolean;
+      "write.enabled": boolean;
     };
   }
 }

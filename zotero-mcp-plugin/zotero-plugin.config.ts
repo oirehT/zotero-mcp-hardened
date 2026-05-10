@@ -7,7 +7,7 @@ export default defineConfig({
   name: pkg.config.addonName,
   id: pkg.config.addonID,
   namespace: pkg.config.addonRef,
-  updateURL: `https://github.com/cookjohn/zotero-mcp/releases/latest/download/${
+  updateURL: `https://github.com/oirehT/zotero-mcp-hardened/releases/latest/download/${
     pkg.version.includes("-") ? "update-beta.json" : "update.json"
   }`,
   xpiDownloadLink:
