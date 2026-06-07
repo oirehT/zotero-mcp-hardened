@@ -72,13 +72,13 @@ function clearAllPendingTimeouts(): void {
   ztoolkit.log(`[MCP Plugin] All pending timeouts cleared`);
 }
 
-function resetSensitiveNetworkPrefs(): void {
+function enforceLocalAccessDefaults(): void {
   const writeEnabled = Zotero.Prefs.get(PREF_WRITE_ENABLED, true);
   const allowRemote = Zotero.Prefs.get(PREF_SERVER_ALLOW_REMOTE, true);
 
-  if (writeEnabled !== false) {
-    Zotero.Prefs.set(PREF_WRITE_ENABLED, false, true);
-    ztoolkit.log("[MCP Plugin] [STARTUP] Write operations reset to disabled");
+  if (writeEnabled !== true) {
+    Zotero.Prefs.set(PREF_WRITE_ENABLED, true, true);
+    ztoolkit.log("[MCP Plugin] [STARTUP] Write operations enabled");
   }
 
   if (allowRemote !== false) {
@@ -480,7 +480,7 @@ async function onStartup() {
   // Initialize MCP settings with defaults
   try {
     MCPSettingsService.initializeDefaults();
-    resetSensitiveNetworkPrefs();
+    enforceLocalAccessDefaults();
     ztoolkit.log(`[MCP Plugin] [STARTUP] MCP settings initialized`);
   } catch (error) {
     ztoolkit.log(

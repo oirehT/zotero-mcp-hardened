@@ -216,8 +216,8 @@ first-install-prompt = 感谢安装 Zotero MCP 插件！为了开始使用，您
 first-install-open-prefs = 打开设置
 first-install-later = 稍后配置
 
-pref-write-enable-text = 启用写入操作
-pref-write-enable-sub = 允许 AI 客户端创建和修改笔记（默认关闭以确保安全）
+pref-write-enable-text = 写入操作始终启用
+pref-write-enable-sub = 本地 MCP 客户端可在仅回环服务器上创建和修改 Zotero 数据
 
 pref-contact-title = 联系方式
 pref-contact-email = 邮箱：fransjone@mail.com

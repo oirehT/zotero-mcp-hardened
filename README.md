@@ -1,11 +1,11 @@
 # Zotero MCP - Model Context Protocol Integration for Zotero
 
-Zotero MCP is an open-source project designed to seamlessly integrate powerful AI capabilities with the leading reference management tool, Zotero, through the Model Context Protocol (MCP). This project consists of two core components: a Zotero plugin and an MCP server, which work together to provide AI assistants (like Claude) with the ability to interact with your local Zotero library.
-_This README is also available in: [:cn: 简体中文](./docs/README-zh.md) | :gb: English._
+Zotero MCP is an open-source project designed to integrate powerful AI capabilities with the leading reference management tool, Zotero, through the Model Context Protocol (MCP). This hardened fork provides a Zotero plugin with an integrated MCP server, giving AI assistants (like Claude) the ability to interact with your local Zotero library.
+_This README is also available in: [简体中文](./docs/README-zh.md) | English._
 [![GitHub](https://img.shields.io/badge/GitHub-zotero--mcp-blue?logo=github)](https://github.com/oirehT/zotero-mcp-hardened)
 [![zotero target version](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue)](https://www.typescriptlang.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org)
 [![Version](https://img.shields.io/badge/Version-1.4.7-brightgreen)]()
 [![EN doc](https://img.shields.io/badge/Document-English-blue.svg)](README.md)
 [![中文文档](https://img.shields.io/badge/文档-中文-blue.svg)](docs/README-zh.md)
@@ -14,9 +14,8 @@ _This README is also available in: [:cn: 简体中文](./docs/README-zh.md) | :g
 
 ## Security defaults in this private hardening fork
 
-This fork keeps the MCP server local by default and disables write operations by
-default. Enable write operations only for a trusted import or maintenance task,
-then disable them again. See [Security Hardening](docs/SECURITY_HARDENING.md)
+This fork keeps the MCP server local by default and exposes write operations on
+that loopback-only server. See [Security Hardening](docs/SECURITY_HARDENING.md)
 for the operating rules and verification commands.
 
 ## Fork us on Wechat
@@ -25,21 +24,21 @@ for the operating rules and verification commands.
 | :--------------------------- | :---------------------------: |
 | ![Reading PDF](./IMG/MP.jpg) | ![Contact us](./IMG/0320.jpg) |
 
-## 📚 Project Overview
+## Project Overview
 
-The Zotero MCP server is a tool server based on the Model Context Protocol that provides seamless integration with the Zotero reference management system for AI applications like Claude Desktop. Through this server, AI assistants can:
+The Zotero MCP server is an integrated tool server based on the Model Context Protocol that provides seamless integration with the Zotero reference management system for AI applications like Claude Desktop. Through this server, AI assistants can:
 
-- 🔍 **Smart Search**: Multi-dimensional library search (title/creator/year/tags/fulltext/semantic) with boolean operators and relevance scoring
-- 📖 **Content Extraction**: Extract PDF full-text, notes, abstracts, webpage snapshots with fine-grained mode control
-- 📝 **Annotation Analysis**: Search and analyze PDF highlights and annotations by color, tags, and keywords
-- 📂 **Collection Browsing**: Browse and search collection hierarchies, retrieve items within collections
-- 🧠 **Semantic Search**: AI-powered concept matching via embedding vectors, discover related literature across languages
-- ✏️ **Write Operations**: Create notes, manage tags, update metadata, create new items and attach PDFs
-- 💾 **Full-text Database**: Access and search cached PDF full-text content
+- **Smart Search**: Multi-dimensional library search (title/creator/year/tags/fulltext/semantic) with boolean operators and relevance scoring
+- **Content Extraction**: Extract PDF full-text, notes, abstracts, webpage snapshots with fine-grained mode control
+- **Annotation Analysis**: Search and analyse PDF highlights and annotations by colour, tags, and keywords
+- **Collection Browsing**: Browse and search collection hierarchies, retrieve items within collections
+- **Semantic Search**: AI-powered concept matching via embedding vectors, discover related literature across languages
+- **Write Operations**: Create notes, manage tags, update metadata, create new items, manage collections, and attach PDFs
+- **Full-text Database**: Access and search cached PDF full-text content
 
-This enables AI assistants to help you with literature reviews, citation management, content analysis, annotation organization, knowledge base management, and more.
+This enables AI assistants to help you with literature reviews, citation management, content analysis, annotation organisation, knowledge base management, and more.
 
-## 🚀 Project Structure
+## Project Structure
 
 This project now features a **unified architecture** with an integrated MCP server:
 
@@ -57,7 +56,7 @@ This eliminates the need for a separate MCP server process, providing a more str
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 This guide is intended to help general users quickly configure and use Zotero MCP, enabling your AI assistant to work seamlessly with your Zotero library.
 
@@ -96,22 +95,23 @@ The plugin uses Streamable HTTP, which enables real-time bidirectional communica
 
 #### Supported AI Clients
 
-- **Claude Desktop**: Streamable HTTP MCP support
-- **Cherry Studio**: Streamable HTTP support
-- **Cursor IDE**: Streamable HTTP MCP support
-- **Custom implementations**: Streamable HTTP protocol
+- **Codex CLI**: Native HTTP MCP configuration
+- **Claude Code**: Native HTTP MCP configuration
+- **Claude Desktop**, **Cline**, **Continue.dev**, **Cursor**, **Chatbox**, **Trae AI**, and **Qwen Code**: `mcp-remote` bridge configuration
+- **Cherry Studio** and **Gemini CLI**: Streamable HTTP configuration
+- **Custom implementations**: Generic HTTP MCP configuration
 
 For detailed client-specific configuration instructions, see the [Chinese README](./docs/README-zh.md).
 
 ---
 
-## 👨‍💻 Developer Guide
+## Developer Guide
 
 ### Prerequisites
 
 - **Zotero** 7.0 or higher
 - **Node.js** 18.0 or higher
-- **npm** or **yarn**
+- **npm**
 - **Git**
 
 ### Step 1: Install and Configure the Zotero Plugin
@@ -156,9 +156,10 @@ Example configuration for Claude Desktop:
 ```json
 {
   "mcpServers": {
-    "zotero": {
-      "transport": "streamable_http",
-      "url": "http://127.0.0.1:23120/mcp"
+    "zotero-mcp": {
+      "command": "npx",
+      "args": ["mcp-remote", "http://127.0.0.1:23120/mcp"],
+      "env": {}
     }
   }
 }
@@ -166,21 +167,21 @@ Example configuration for Claude Desktop:
 
 ---
 
-## 🧩 Features
+## Features
 
 ### `zotero-mcp-plugin` Features
 
 - **Integrated MCP Server**: Built-in MCP server using Streamable HTTP protocol, no separate process needed
 - **Advanced Search Engine**: Full-text search with boolean operators, relevance scoring, filtering by title, creator, year, tags, item type, and more
 - **Unified Content Extraction**: Extract content from PDFs, attachments, notes, abstracts, webpage snapshots with four modes (minimal/preview/standard/complete)
-- **Smart Annotation System**: Search and retrieve PDF highlights, annotations, and notes by color, tags, and keywords with intelligent ranking
+- **Smart Annotation System**: Search and retrieve PDF highlights, annotations, and notes by colour, tags, and keywords with intelligent ranking
 - **Collection Management**: Browse, search collection hierarchies, get collection details, subcollections, and item lists
 - **Semantic Search**: AI-powered semantic search using embedding vectors
   - Supports OpenAI and Ollama embedding APIs (auto-detection)
   - Vector indexing with SQLite-vec storage
   - Index status column in main library view
   - Collection/item context menu for index management
-- **Write Operations**: Create/modify notes, manage tags, update metadata fields, create new items and reparent standalone PDFs
+- **Write Operations**: Create/modify notes, manage tags, update metadata fields, create new items, reparent standalone PDFs, attach files or URLs, trash attachments, and manage collections
 - **Full-text Database**: Cached PDF full-text database with list, search, get, and stats operations
 - **Standalone Attachment Management**: Search and manage standalone PDF items without parent metadata
 - **Client Configuration Generator**: Automatically generates configuration for various AI clients
@@ -189,7 +190,7 @@ Example configuration for Claude Desktop:
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 Here are some screenshots demonstrating the functionality of Zotero MCP:
 
@@ -205,9 +206,9 @@ Here are some screenshots demonstrating the functionality of Zotero MCP:
 
 ---
 
-## 🔧 API Reference (MCP Tools)
+## API Reference (MCP Tools)
 
-The integrated MCP server provides **20 tools** in 5 categories:
+The integrated MCP server provides **25 tools** in 5 categories. Semantic tools can be disabled in preferences. Mutating collection tools and `write_*` tools are always enabled on the loopback-only MCP server.
 
 ### 1. Search & Query (7 tools)
 
@@ -219,27 +220,19 @@ Advanced library search with multi-dimensional filtering, boolean operators, rel
 
 #### `search_annotations`
 
-Search annotations by query, colors, or tags with intelligent ranking.
+Search annotations by query, colours, or tags with intelligent ranking.
 
 - `q`, `itemKeys`, `types` (note/highlight/annotation/ink/text/image), `colors`, `tags`, `mode`, `limit`, `offset`
 
-#### `search_fulltext`
+#### `get_annotations`
 
-Full-text search across all document content with context snippets.
+Get annotations and notes by item key, annotation ID, or a batch of annotation IDs, with optional type, colour, and tag filters.
 
-- `q` (required), `itemKeys`, `mode`, `contextLength`, `caseSensitive`
-
-#### `search_collections`
-
-Search collections by name. Params: `q`, `limit`.
+- `itemKey`, `annotationId`, `annotationIds`, `types`, `colors`, `tags`, `mode`, `maxTokens`, `limit`, `offset`
 
 #### `get_item_details`
 
 Get complete metadata for a single item. Params: `itemKey` (required), `mode`.
-
-#### `get_item_abstract`
-
-Get item abstract/summary. Params: `itemKey` (required), `format` (json/text).
 
 #### `get_content`
 
@@ -247,11 +240,27 @@ Unified content extraction: PDF full-text, notes, abstracts, webpage snapshots f
 
 - `itemKey`, `attachmentKey`, `mode`, `include` (pdf/attachments/notes/abstract/webpage), `contentControl`, `format` (json/text)
 
-### 2. Collection Management (4 tools)
+#### `search_fulltext`
+
+Full-text search across all document content with context snippets.
+
+- `q` (required), `itemKeys`, `mode`, `contextLength`, `maxResults`, `caseSensitive`
+
+#### `get_item_abstract`
+
+Get item abstract/summary. Params: `itemKey` (required), `format` (json/text).
+
+### 2. Collection Management (10 tools, 5 mutating)
 
 #### `get_collections`
 
-Get all collections. Params: `mode`, `limit`, `offset`.
+Get collections as a flat list, a scoped child list, or a recursive tree.
+
+- `mode`, `limit`, `offset`, `recursive`, `parentCollection`
+
+#### `search_collections`
+
+Search collections by name. Params: `q`, `limit`.
 
 #### `get_collection_details`
 
@@ -264,6 +273,26 @@ Get items in a collection. Params: `collectionKey` (required), `limit`, `offset`
 #### `get_subcollections`
 
 Get subcollections. Params: `collectionKey` (required), `limit`, `offset`, `recursive`.
+
+#### `create_collection`
+
+Create a top-level or nested collection. Params: `name` (required), `parentCollection`.
+
+#### `update_collection`
+
+Rename or move a collection. Params: `collectionKey` (required), `name`, `parentCollection`.
+
+#### `delete_collection`
+
+Delete a collection. Params: `collectionKey` (required), `deleteItems`.
+
+#### `add_items_to_collection`
+
+Add items to a collection. Params: `collectionKey` (required), `itemKeys` (required).
+
+#### `remove_items_from_collection`
+
+Remove items from a collection without deleting them from the library. Params: `collectionKey` (required), `itemKeys` (required).
 
 ### 3. Semantic Search (3 tools, can be disabled in preferences)
 
@@ -291,7 +320,7 @@ Access cached full-text content database (read-only).
 
 - `action` (required: list/search/get/stats), `query`, `itemKeys`, `limit`
 
-### 5. Write Operations (4 tools, can be disabled in preferences)
+### 5. Item and Note Write Operations (4 tools, always enabled)
 
 #### `write_note`
 
@@ -313,13 +342,13 @@ Update metadata fields on items (title, abstract, date, DOI, creators, etc.).
 
 #### `write_item`
 
-Create new items or reparent existing attachments.
+Create new items, reparent existing attachments, attach files or URLs, or move attachments to Zotero trash.
 
-- `action` (required: create/reparent), `itemType`, `fields`, `creators`, `tags`, `attachmentKeys`, `parentKey`
+- `action` (required: create/reparent/attach_file/attach_url/trash_attachment), `itemType`, `fields`, `creators`, `tags`, `attachmentKeys`, `attachmentKey`, `parentKey`
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests, report issues, or suggest enhancements.
 
@@ -329,12 +358,13 @@ Contributions are welcome! Please feel free to submit pull requests, report issu
 4.  Push to the branch (`git push origin feature/AmazingFeature`).
 5.  Open a Pull Request.
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](./LICENSE).
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
+- Original project and author: @cookjohn ([cookjohn/zotero-mcp](https://github.com/cookjohn/zotero-mcp)).
 - [Zotero](https://www.zotero.org/) - An excellent open-source reference management tool.
 - [Model Context Protocol](https://modelcontextprotocol.org/) - The protocol for AI tool integration.
 - [![Using Zotero Plugin Template](https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github)](https://github.com/windingwind/zotero-plugin-template)

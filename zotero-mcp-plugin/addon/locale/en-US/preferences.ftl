@@ -216,8 +216,8 @@ first-install-prompt = Thank you for installing the Zotero MCP Plugin! To get st
 first-install-open-prefs = Open Settings
 first-install-later = Configure Later
 
-pref-write-enable-text = Enable Write Operations
-pref-write-enable-sub = Allow AI clients to create and modify notes (disabled by default for safety)
+pref-write-enable-text = Write Operations Always Enabled
+pref-write-enable-sub = Local MCP clients can create and modify Zotero data on the loopback-only server
 
 pref-contact-title = Contact Information
 pref-contact-email = Email: fransjone@mail.com

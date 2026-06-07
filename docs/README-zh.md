@@ -170,7 +170,7 @@ AI 客户端 ↔ Streamable HTTP ↔ Zotero 插件（集成 MCP 服务器）
 - **智能批注系统**: 按颜色、标签、关键词搜索和检索 PDF 高亮、注释和笔记，支持智能排序
 - **分类管理**: 浏览、搜索分类层级结构，获取分类详情、子分类和条目列表
 - **语义搜索**: 基于 AI 向量嵌入的语义搜索，支持 OpenAI/Ollama API，发现概念相关的文献
-- **写入功能**: 创建/修改笔记、管理标签、更新元数据字段、创建新条目并关联独立 PDF
+- **写入功能**: 创建/修改笔记、管理标签、更新元数据字段、创建新条目、管理分类并关联独立 PDF
 - **全文数据库**: 缓存的 PDF 全文数据库，支持列表、搜索、获取和统计操作
 - **独立附件管理**: 搜索和管理只有 PDF 没有元数据信息的独立条目
 - **客户端配置生成器**: 自动为各种 AI 客户端生成配置
@@ -329,7 +329,7 @@ MCP 服务器已集成在插件内，位于 `src/modules/streamableMCPServer.ts`
 
 ## 🔧 API 参考（MCP 工具列表）
 
-插件集成的 MCP 服务器提供以下 **20 个工具**，分为 5 大类：
+插件集成的 MCP 服务器提供以下 **25 个工具**，分为 5 大类。写入工具在仅本地回环的 MCP 服务器上始终启用。
 
 ### 一、搜索与查询（7 个）
 
@@ -363,29 +363,24 @@ MCP 服务器已集成在插件内，位于 `src/modules/streamableMCPServer.ts`
 | `tags`     | string[] | 按标签过滤                                                        |
 | `mode`     | string   | 内容处理模式                                                      |
 
-#### `search_fulltext`
+#### `get_annotations`
 
-在所有文档全文中搜索，返回上下文片段和相关性评分。
+按条目 Key、批注 ID 或批注 ID 列表获取批注和笔记，可按类型、颜色和标签过滤。
 
-| 参数            | 类型     | 描述                 |
-| --------------- | -------- | -------------------- |
-| `q`             | string   | **必需**，搜索关键词 |
-| `itemKeys`      | string[] | 限定搜索范围         |
-| `mode`          | string   | 处理模式             |
-| `contextLength` | number   | 匹配上下文长度       |
-| `caseSensitive` | boolean  | 区分大小写           |
-
-#### `search_collections`
-
-按名称搜索分类。参数：`q`（搜索词）、`limit`（最大结果数）。
+| 参数            | 类型     | 描述                                   |
+| --------------- | -------- | -------------------------------------- |
+| `itemKey`       | string   | 获取指定条目的批注                     |
+| `annotationId`  | string   | 获取指定批注                           |
+| `annotationIds` | string[] | 批量获取指定批注                       |
+| `types`         | string[] | 批注类型：note/highlight/annotation 等 |
+| `colors`        | string[] | 按颜色过滤                             |
+| `tags`          | string[] | 按标签过滤                             |
+| `mode`          | string   | 内容处理模式                           |
+| `limit/offset`  | number   | 分页控制                               |
 
 #### `get_item_details`
 
 获取单个文献的完整元数据（作者、日期、DOI、标签、附件、笔记等）。参数：`itemKey`（必需）、`mode`。
-
-#### `get_item_abstract`
-
-获取条目的摘要/简介。参数：`itemKey`（必需）、`format`（json/text）。
 
 #### `get_content`
 
@@ -400,11 +395,31 @@ MCP 服务器已集成在插件内，位于 `src/modules/streamableMCPServer.ts`
 | `contentControl` | object | 高级内容控制（preserveOriginal/allowExtended/maxContentLength 等） |
 | `format`         | string | 输出格式：json（结构化）或 text（纯文本）                          |
 
-### 二、分类管理（4 个）
+#### `search_fulltext`
+
+在所有文档全文中搜索，返回上下文片段和相关性评分。
+
+| 参数            | 类型     | 描述                 |
+| --------------- | -------- | -------------------- |
+| `q`             | string   | **必需**，搜索关键词 |
+| `itemKeys`      | string[] | 限定搜索范围         |
+| `mode`          | string   | 处理模式             |
+| `contextLength` | number   | 匹配上下文长度       |
+| `caseSensitive` | boolean  | 区分大小写           |
+
+#### `get_item_abstract`
+
+获取条目的摘要/简介。参数：`itemKey`（必需）、`format`（json/text）。
+
+### 二、分类管理（10 个，其中 5 个会修改数据）
 
 #### `get_collections`
 
 获取文献库中所有分类列表。参数：`mode`、`limit`、`offset`。
+
+#### `search_collections`
+
+按名称搜索分类。参数：`q`（搜索词）、`limit`（最大结果数）。
 
 #### `get_collection_details`
 
@@ -417,6 +432,26 @@ MCP 服务器已集成在插件内，位于 `src/modules/streamableMCPServer.ts`
 #### `get_subcollections`
 
 获取子分类列表。参数：`collectionKey`（必需）、`limit`、`offset`、`recursive`（是否递归）。
+
+#### `create_collection`
+
+创建顶层或嵌套分类。参数：`name`（必需）、`parentCollection`。
+
+#### `update_collection`
+
+重命名或移动分类。参数：`collectionKey`（必需）、`name`、`parentCollection`。
+
+#### `delete_collection`
+
+删除分类。参数：`collectionKey`（必需）、`deleteItems`。
+
+#### `add_items_to_collection`
+
+将条目加入分类。参数：`collectionKey`（必需）、`itemKeys`（必需）。
+
+#### `remove_items_from_collection`
+
+从分类中移除条目，但不从文献库中删除。参数：`collectionKey`（必需）、`itemKeys`（必需）。
 
 ### 三、语义搜索（3 个，可在偏好设置中禁用）
 
@@ -452,7 +487,7 @@ MCP 服务器已集成在插件内，位于 `src/modules/streamableMCPServer.ts`
 | `itemKeys` | string[] | 指定条目（get 操作）                                            |
 | `limit`    | number   | 最大结果数                                                      |
 
-### 五、写入操作（4 个，可在偏好设置中禁用）
+### 五、写入操作（4 个，始终启用）
 
 #### `write_note`
 
@@ -488,17 +523,18 @@ MCP 服务器已集成在插件内，位于 `src/modules/streamableMCPServer.ts`
 
 #### `write_item`
 
-创建新的文献条目或重新关联附件。
+创建新的文献条目、重新关联附件、导入本地文件或 URL，或将附件移入 Zotero 回收站。
 
-| 参数             | 类型     | 描述                                                      |
-| ---------------- | -------- | --------------------------------------------------------- |
-| `action`         | string   | **必需**：create（创建条目）/reparent（移动附件）         |
-| `itemType`       | string   | 条目类型（journalArticle/book/conferencePaper/thesis 等） |
-| `fields`         | object   | 元数据字段                                                |
-| `creators`       | array    | 作者列表                                                  |
-| `tags`           | string[] | 标签                                                      |
-| `attachmentKeys` | string[] | 要关联的独立附件 Key 列表                                 |
-| `parentKey`      | string   | reparent 操作的目标父条目 Key                             |
+| 参数             | 类型     | 描述                                                                 |
+| ---------------- | -------- | -------------------------------------------------------------------- |
+| `action`         | string   | **必需**：create/reparent/attach_file/attach_url/trash_attachment    |
+| `itemType`       | string   | 条目类型（journalArticle/book/conferencePaper/thesis 等）            |
+| `fields`         | object   | 元数据字段；attach_file 可传 file/path，attach_url 可传 url          |
+| `creators`       | array    | 作者列表                                                             |
+| `tags`           | string[] | 标签                                                                 |
+| `attachmentKeys` | string[] | 要关联或移动的独立附件 Key 列表                                      |
+| `attachmentKey`  | string   | trash_attachment 操作的单个附件 Key                                  |
+| `parentKey`      | string   | reparent、attach_file、attach_url 的目标父条目 Key，可作为删除保护项 |
 
 ---
 
