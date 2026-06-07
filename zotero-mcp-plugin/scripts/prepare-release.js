@@ -15,13 +15,28 @@ const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
 const {
   version,
   config: { addonID },
+  repository,
 } = packageJson;
 
-const repoUrl = "https://github.com/cookjohn/zotero-mcp";
+function normaliseRepoUrl(value) {
+  if (!value) {
+    return "https://github.com/oirehT/zotero-mcp-hardened";
+  }
+
+  return value
+    .replace(/^git\+/, "")
+    .replace(/\.git$/, "")
+    .replace(/^git@github\.com:/, "https://github.com/");
+}
+
+const repoUrl =
+  process.env.GITHUB_REPOSITORY &&
+  `https://github.com/${process.env.GITHUB_REPOSITORY}`;
+const releaseRepoUrl = normaliseRepoUrl(repoUrl || repository?.url);
 
 function generateUpdateJson(isBeta = false) {
   const currentVersion = isBeta ? `${version}-beta.0` : version;
-  const updateLink = `${repoUrl}/releases/download/v${currentVersion}/zotero-mcp-plugin-${currentVersion}.xpi`;
+  const updateLink = `${releaseRepoUrl}/releases/download/v${currentVersion}/zotero-mcp-plugin-${currentVersion}.xpi`;
 
   return {
     addons: {
@@ -45,11 +60,11 @@ function generateUpdateJson(isBeta = false) {
 
 fs.writeFileSync(
   updateJsonPath,
-  JSON.stringify(generateUpdateJson(false), null, 2),
+  `${JSON.stringify(generateUpdateJson(false), null, 2)}\n`,
 );
 fs.writeFileSync(
   updateBetaJsonPath,
-  JSON.stringify(generateUpdateJson(true), null, 2),
+  `${JSON.stringify(generateUpdateJson(true), null, 2)}\n`,
 );
 
 console.log(
