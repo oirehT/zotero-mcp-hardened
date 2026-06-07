@@ -379,12 +379,12 @@ Contributions are welcome! Please feel free to submit pull requests, report issu
 ## License
 
 This project is licensed under the [MIT License](./LICENSE). The licence keeps
-the original Zotero-MCP contributor notice and adds Arthur for this working
+the original Zotero-MCP contributor notice and adds oirehT for this working
 copy.
 
 ## Acknowledgements
 
-- This public working copy is maintained by Arthur.
+- This public working copy is maintained by oirehT.
 - Original project and author: @cookjohn ([cookjohn/zotero-mcp](https://github.com/cookjohn/zotero-mcp)).
 - [Zotero](https://www.zotero.org/) - An excellent open-source reference management tool.
 - [Model Context Protocol](https://modelcontextprotocol.org/) - The protocol for AI tool integration.
