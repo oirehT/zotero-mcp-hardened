@@ -1,6 +1,11 @@
 # Zotero MCP - Model Context Protocol Integration for Zotero
 
-Zotero MCP is an open-source project designed to integrate powerful AI capabilities with the leading reference management tool, Zotero, through the Model Context Protocol (MCP). This hardened fork provides a Zotero plugin with an integrated MCP server, giving AI assistants (like Claude) the ability to interact with your local Zotero library.
+Zotero MCP is an open-source project designed to integrate powerful AI
+capabilities with the leading reference management tool, Zotero, through the
+Model Context Protocol (MCP). This public working copy, derived from
+`cookjohn/zotero-mcp`, provides a hardened Zotero plugin with an integrated MCP
+server, giving AI assistants the ability to interact with your local Zotero
+library.
 [![GitHub](https://img.shields.io/badge/GitHub-zotero--mcp-blue?logo=github)](https://github.com/oirehT/zotero-mcp-hardened)
 [![zotero target version](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org)
@@ -13,7 +18,7 @@ Zotero MCP is an open-source project designed to integrate powerful AI capabilit
 ## Navigation
 
 - [Installation and Quick Start Guide](#installation-and-quick-start-guide)
-- [Security defaults](#security-defaults-in-this-hardened-fork)
+- [Security defaults](#security-defaults-in-this-hardened-working-copy)
 - [Project Overview](#project-overview)
 - [Project Structure](#project-structure)
 - [Developer Guide](#developer-guide)
@@ -28,7 +33,9 @@ Zotero MCP is an open-source project designed to integrate powerful AI capabilit
 ## Installation and Quick Start Guide
 
 This guide is intended to help general users quickly configure and use Zotero
-MCP, enabling your AI assistant to work seamlessly with your Zotero library.
+MCP, enabling your AI assistant to work seamlessly with your Zotero library. No
+public release has been published yet, so the current installation path is to
+build the XPI from source.
 
 ### 1. Installation (For General Users)
 
@@ -43,10 +50,17 @@ and writing efficiency.
 **Two-Step Quick Start:**
 
 1.  **Install the Plugin**:
-    - Go to the project's
-      [Releases Page](https://github.com/oirehT/zotero-mcp-hardened/releases)
-      to download the latest `zotero-mcp-plugin-x.x.x.xpi` file.
-    - In Zotero, install the `.xpi` file via `Tools -> Add-ons`.
+    - Clone this repository and build the plugin:
+
+      ```bash
+      git clone https://github.com/oirehT/zotero-mcp-hardened.git
+      cd zotero-mcp-hardened/zotero-mcp-plugin
+      pnpm install
+      pnpm run build
+      ```
+
+    - In Zotero, install `.scaffold/build/zotero-mcp-plugin.xpi` via
+      `Tools -> Add-ons`.
     - Restart Zotero.
 
 2.  **Configure the Plugin**:
@@ -88,11 +102,12 @@ configuration from the Zotero plugin preferences.
 
 ---
 
-## Security defaults in this hardened fork
+## Security defaults in this hardened working copy
 
-This fork keeps the MCP server local by default and exposes write operations on
-that loopback-only server. See [Security Hardening](docs/SECURITY_HARDENING.md)
-for the operating rules and verification commands.
+This working copy keeps the MCP server local by default and exposes write
+operations on that loopback-only server. See
+[Security Hardening](docs/SECURITY_HARDENING.md) for the operating rules and
+verification commands.
 
 ## Project Overview
 
@@ -135,13 +150,7 @@ This eliminates the need for a separate MCP server process, providing a more str
 - **pnpm** 10.33.2 or higher
 - **Git**
 
-### Step 1: Install and Configure the Zotero Plugin
-
-1.  Download the latest `zotero-mcp-plugin.xpi` from the [Releases Page](https://github.com/oirehT/zotero-mcp-hardened/releases).
-2.  Install it in Zotero via `Tools -> Add-ons`.
-3.  Enable the server in `Preferences -> Zotero MCP Plugin`.
-
-### Step 2: Development Setup
+### Step 1: Development Setup
 
 1.  Clone the repository:
     ```bash
@@ -164,7 +173,11 @@ This eliminates the need for a separate MCP server process, providing a more str
     pnpm run build
     ```
 
-### Step 3: Connect AI Clients (Development)
+4.  Install `.scaffold/build/zotero-mcp-plugin.xpi` in Zotero via
+    `Tools -> Add-ons`, then enable the server in
+    `Preferences -> Zotero MCP Plugin`.
+
+### Step 2: Connect AI Clients (Development)
 
 The plugin includes an integrated MCP server that uses Streamable HTTP:
 
@@ -365,10 +378,13 @@ Contributions are welcome! Please feel free to submit pull requests, report issu
 
 ## License
 
-This project is licensed under the [MIT License](./LICENSE).
+This project is licensed under the [MIT License](./LICENSE). The licence keeps
+the original Zotero-MCP contributor notice and adds Arthur for this working
+copy.
 
 ## Acknowledgements
 
+- This public working copy is maintained by Arthur.
 - Original project and author: @cookjohn ([cookjohn/zotero-mcp](https://github.com/cookjohn/zotero-mcp)).
 - [Zotero](https://www.zotero.org/) - An excellent open-source reference management tool.
 - [Model Context Protocol](https://modelcontextprotocol.org/) - The protocol for AI tool integration.

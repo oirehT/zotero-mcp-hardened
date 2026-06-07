@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.4.7",
   "packageManager": "pnpm@10.33.2",
-  "description": "Zotero MCP Plugin",
+  "description": "Hardened Zotero MCP plugin with an integrated local MCP server",
   "config": {
     "addonName": "Zotero MCP Plugin",
     "addonID": "zotero-mcp-plugin@autoagent.my",
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/oirehT/zotero-mcp-hardened.git"
   },
-  "author": "cookjohn",
+  "author": "cookjohn and Arthur",
   "bugs": {
     "url": "https://github.com/oirehT/zotero-mcp-hardened/issues"
   },

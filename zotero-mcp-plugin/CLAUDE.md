@@ -18,9 +18,11 @@ A Zotero plugin that provides MCP (Model Context Protocol) server functionality,
 - `.scaffold/build/` - Build output
 - `update.json` - Zotero auto-update manifest
 
-## Available Skills
+## Available Workflows
 
-- `release` - Automate version bump, XPI build, and GitHub release. See `../.claude/skills/release.md`
+- `pnpm run build` - Build the XPI into `.scaffold/build/`
+- `.github/workflows/release.yml` - Publish a GitHub release from a matching
+  `vX.Y.Z` tag or manual workflow dispatch
 
 ## Build Commands
 
@@ -43,14 +45,15 @@ pnpm run start      # Development with hot reload
 
 ### Release Workflow
 
-See `../.claude/skills/release.md` for automated release process.
+Use `.github/workflows/release.yml` for the automated release process.
 
 Key points:
 
 - Version in: `package.json`, `README.md`, `update.json`
 - Build: `pnpm run build` -> `.scaffold/build/zotero-mcp-plugin.xpi`
 - `addon/` is gitignored — use `git add -f` for files under it
-- Release assets: XPI (renamed to `zotero-mcp-plugin-X.Y.Z.xpi`) + `update.json`
+- Release assets: XPI renamed to `zotero-mcp-plugin-X.Y.Z.xpi` plus
+  `update.json` or `update-beta.json`
 
 ## Code Style
 

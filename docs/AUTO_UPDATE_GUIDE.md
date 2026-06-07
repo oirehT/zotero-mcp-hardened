@@ -3,14 +3,17 @@ summary: Auto-update release manifest behaviour for the hardened Zotero MCP plug
 read_when:
   - Preparing a plugin release
   - Reviewing update_url behaviour
-  - Checking whether the XPI can update from the hardened private fork
+  - Checking whether the XPI can update from the hardened public working copy
 ---
 
 # Zotero MCP Plugin Auto-Update Guide
 
-## 🔄 Auto-Update Configuration
+## Auto-Update Configuration
 
-The Zotero MCP plugin is configured for automatic updates through GitHub releases. Here's how it works:
+The Zotero MCP plugin is configured to use GitHub releases for automatic
+updates once a release has been published. There are currently no public release
+assets, so `releases/latest` URLs will not resolve until the first release is
+created.
 
 ### Update URL Configuration
 
@@ -43,8 +46,8 @@ The update manifest follows Zotero's update format:
     "zotero-mcp-plugin@autoagent.my": {
       "updates": [
         {
-          "version": "1.2.0",
-          "update_link": "https://github.com/oirehT/zotero-mcp-hardened/releases/download/v1.2.0/zotero-mcp-plugin-1.2.0.xpi",
+          "version": "1.4.7",
+          "update_link": "https://github.com/oirehT/zotero-mcp-hardened/releases/download/v1.4.7/zotero-mcp-plugin-1.4.7.xpi",
           "applications": {
             "zotero": {
               "strict_min_version": "6.999",
@@ -58,14 +61,14 @@ The update manifest follows Zotero's update format:
 }
 ```
 
-## 📋 How Auto-Update Works
+## How Auto-Update Works
 
 1. **Version Check**: Zotero periodically checks the `update_url` for version updates
 2. **Comparison**: Compares the version in `update.json` with the installed version
 3. **Download**: If a newer version is found, downloads the `.xpi` from `update_link`
 4. **Installation**: Prompts user to install the update or installs automatically (based on Zotero settings)
 
-## 🚀 Release Process for Auto-Update
+## Release Process for Auto-Update
 
 ### 1. Version Update
 
@@ -100,7 +103,7 @@ Prerelease versions publish `update-beta.json` instead.
 - GitHub redirects `latest` to the most recent release
 - Users get the newest version automatically
 
-## 🧪 Testing Auto-Update
+## Testing Auto-Update
 
 ### Method 1: Version Downgrade Test
 
@@ -123,8 +126,9 @@ curl -L "https://github.com/oirehT/zotero-mcp-hardened/releases/latest/download/
 ```
 
 Should return the latest version information.
+This only succeeds after the first non-draft GitHub release exists.
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -148,7 +152,7 @@ Should return the latest version information.
 
    ```bash
    # Extract and check manifest from installed .xpi
-   unzip -p zotero-mcp-plugin-1.2.0.xpi manifest.json | jq
+   unzip -p zotero-mcp-plugin-1.4.7.xpi manifest.json | jq
    ```
 
 2. **Verify update URL**:
@@ -159,10 +163,10 @@ Should return the latest version information.
 
 3. **Test download link**:
    ```bash
-   curl -I "https://github.com/oirehT/zotero-mcp-hardened/releases/download/v1.2.0/zotero-mcp-plugin-1.2.0.xpi"
+   curl -I "https://github.com/oirehT/zotero-mcp-hardened/releases/download/v1.4.7/zotero-mcp-plugin-1.4.7.xpi"
    ```
 
-## 📝 Update Check Frequency
+## Update Check Frequency
 
 Zotero checks for add-on updates:
 
@@ -170,14 +174,14 @@ Zotero checks for add-on updates:
 - On startup if last check was >24 hours ago
 - When manually triggered via "Check for Updates"
 
-## 🔒 Security Considerations
+## Security Considerations
 
 - Updates are served over HTTPS
-- GitHub provides file integrity and authenticity
-- Zotero validates plugin signatures (if signed)
+- Release assets are hosted from this repository's GitHub release records
+- Zotero validates plugin signatures if the XPI is signed
 - Users can disable automatic updates in Zotero preferences
 
-## 📚 References
+## References
 
 - [Zotero Plugin Development](https://www.zotero.org/support/dev/client_coding/plugin_development)
 - [WebExtension Update Manifest](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Updates)
