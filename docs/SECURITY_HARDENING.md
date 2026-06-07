@@ -34,7 +34,8 @@ After starting Zotero, verify that the listener is loopback-only:
 lsof -nP -iTCP:23120 -sTCP:LISTEN
 ```
 
-The address should be `127.0.0.1:23120`, not `*:23120` or `0.0.0.0:23120`.
+Use your configured MCP port if you changed it from the default `23120`. The
+address should be `127.0.0.1:23120`, not `*:23120` or `0.0.0.0:23120`.
 
 Check write exposure with `tools/list`; the list should contain collection
 mutation tools and `write_*` tools when connected to the local MCP endpoint.

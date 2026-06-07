@@ -10,7 +10,22 @@ Zotero MCP is an open-source project designed to integrate powerful AI capabilit
 
 ---
 
-## Security defaults in this private hardening fork
+## Navigation
+
+- [Security defaults](#security-defaults-in-this-hardened-fork)
+- [Project Overview](#project-overview)
+- [Project Structure](#project-structure)
+- [Quick Start Guide](#quick-start-guide)
+- [Developer Guide](#developer-guide)
+- [Features](#features)
+- [API Reference](#api-reference-mcp-tools)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+---
+
+## Security defaults in this hardened fork
 
 This fork keeps the MCP server local by default and exposes write operations on
 that loopback-only server. See [Security Hardening](docs/SECURITY_HARDENING.md)
