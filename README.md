@@ -111,7 +111,7 @@ For detailed client-specific configuration instructions, see the [Chinese README
 
 - **Zotero** 7.0 or higher
 - **Node.js** 18.0 or higher
-- **npm**
+- **pnpm** 10.33.2 or higher
 - **Git**
 
 ### Step 1: Install and Configure the Zotero Plugin
@@ -130,17 +130,17 @@ For detailed client-specific configuration instructions, see the [Chinese README
 2.  Set up the plugin development environment:
     ```bash
     cd zotero-mcp-plugin
-    npm install
-    npm run build
+    pnpm install
+    pnpm run build
     ```
 3.  Load the plugin in Zotero:
 
     ```bash
     # For development with auto-reload
-    npm run start
+    pnpm run start
 
     # Or install the built .xpi file manually
-    npm run build
+    pnpm run build
     ```
 
 ### Step 3: Connect AI Clients (Development)

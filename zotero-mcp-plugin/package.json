@@ -2,6 +2,7 @@
   "name": "zotero-mcp-plugin",
   "type": "module",
   "version": "1.4.7",
+  "packageManager": "pnpm@10.33.2",
   "description": "Zotero MCP Plugin",
   "config": {
     "addonName": "Zotero MCP Plugin",
@@ -25,29 +26,39 @@
     "build": "zotero-plugin build && tsc --noEmit",
     "lint:check": "prettier --check . && eslint .",
     "lint:fix": "prettier --write . && eslint . --fix",
-    "release": "npm version patch --force -m \"Release v%s\" && git push --follow-tags",
-    "release:beta": "npm version prepatch --preid beta --force -m \"Release v%s\" && git push --follow-tags",
     "prepare-release": "node scripts/prepare-release.js",
     "release:init": "node scripts/init-release.js",
     "test": "zotero-plugin test",
     "test:update": "node scripts/test-update.js",
-    "update-deps": "npm update --save"
+    "update-deps": "pnpm update --latest"
   },
   "dependencies": {
-    "zotero-plugin-toolkit": "^5.1.0-beta.4"
+    "zotero-plugin-toolkit": "^5.1.2"
   },
   "devDependencies": {
-    "@types/chai": "^5.2.2",
+    "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^24.2.0",
-    "@zotero-plugin/eslint-config": "^0.6.7",
-    "chai": "^5.2.1",
-    "eslint": "^9.32.0",
-    "mocha": "^11.7.1",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.2",
-    "zotero-plugin-scaffold": "^0.8.0",
-    "zotero-types": "^4.1.0-beta.1"
+    "@types/node": "^24.13.1",
+    "@zotero-plugin/eslint-config": "^0.6.9",
+    "chai": "^5.3.3",
+    "eslint": "^9.39.4",
+    "mocha": "^11.7.6",
+    "prettier": "^3.8.3",
+    "typescript": "^5.9.3",
+    "zotero-plugin-scaffold": "^0.8.6",
+    "zotero-types": "^4.1.2"
+  },
+  "pnpm": {
+    "auditConfig": {
+      "ignoreCves": [
+        "CVE-2018-5158",
+        "CVE-2024-4367"
+      ]
+    },
+    "overrides": {
+      "diff": "^8.0.3",
+      "serialize-javascript": "^7.0.5"
+    }
   },
   "prettier": {
     "printWidth": 80,

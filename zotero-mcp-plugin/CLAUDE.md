@@ -25,8 +25,8 @@ A Zotero plugin that provides MCP (Model Context Protocol) server functionality,
 ## Build Commands
 
 ```bash
-npm run build      # Production build
-npm run start      # Development with hot reload
+pnpm run build      # Production build
+pnpm run start      # Development with hot reload
 ```
 
 ## Important Patterns
@@ -49,7 +49,7 @@ See `../.claude/skills/release.md` for automated release process.
 Key points:
 
 - Version in: `package.json`, `README.md`, `docs/README-zh.md` (badge), `update.json`
-- Build: `npm run build` → `.scaffold/build/zotero-mcp-plugin.xpi`
+- Build: `pnpm run build` -> `.scaffold/build/zotero-mcp-plugin.xpi`
 - `addon/` is gitignored — use `git add -f` for files under it
 - Release assets: XPI (renamed to `zotero-mcp-plugin-X.Y.Z.xpi`) + `update.json`
 

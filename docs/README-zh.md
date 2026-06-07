@@ -201,7 +201,7 @@ AI 客户端 ↔ Streamable HTTP ↔ Zotero 插件（集成 MCP 服务器）
 
 - **Zotero** 7.0 或更高版本
 - **Node.js** 18.0 或更高版本（仅用于开发）
-- **npm** 或 **yarn** 包管理器（仅用于开发）
+- **pnpm** 10.33.2 或更高版本（仅用于开发）
 - **Git**（仅用于开发）
 
 ### 步骤 1: 安装和配置 Zotero 插件
@@ -228,18 +228,18 @@ AI 客户端 ↔ Streamable HTTP ↔ Zotero 插件（集成 MCP 服务器）
 
    ```bash
    cd zotero-mcp-plugin
-   npm install
-   npm run build
+   pnpm install
+   pnpm run build
    ```
 
 3. 在 Zotero 中加载插件：
 
    ```bash
    # 开发模式（自动重载）
-   npm run start
+   pnpm run start
 
    # 或手动安装构建后的 .xpi 文件
-   npm run build
+   pnpm run build
    ```
 
 ### 步骤 3: 连接 AI 客户端
@@ -301,19 +301,19 @@ AI 客户端 ↔ Streamable HTTP ↔ Zotero 插件（集成 MCP 服务器）
 1. 进入插件目录并安装依赖：
    ```bash
    cd zotero-mcp-plugin
-   npm install
+   pnpm install
    ```
 2. 启动开发模式：
 
    ```bash
-   npm start
+   pnpm run start
    ```
 
    这将启动 Zotero 并自动加载插件。代码更改时会自动重载。
 
 3. 构建插件 `.xpi` 文件：
    ```bash
-   npm run build
+   pnpm run build
    ```
 
 ### MCP 服务器开发
