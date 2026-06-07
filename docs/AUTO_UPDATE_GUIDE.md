@@ -14,7 +14,13 @@ The Zotero MCP plugin is configured for automatic updates through GitHub release
 
 ### Update URL Configuration
 
-The plugin's `manifest.json` contains:
+The source `addon/manifest.json` contains the `__updateURL__` placeholder. During
+the scaffold build, `zotero-plugin.config.ts` fills it from the package version:
+
+- stable versions use `https://github.com/oirehT/zotero-mcp-hardened/releases/latest/download/update.json`
+- prerelease versions use `https://github.com/oirehT/zotero-mcp-hardened/releases/latest/download/update-beta.json`
+
+The built plugin manifest should contain:
 
 ```json
 {
@@ -42,7 +48,7 @@ The update manifest follows Zotero's update format:
           "applications": {
             "zotero": {
               "strict_min_version": "6.999",
-              "strict_max_version": "8.*"
+              "strict_max_version": "9.*"
             }
           }
         }
@@ -63,21 +69,32 @@ The update manifest follows Zotero's update format:
 
 ### 1. Version Update
 
-```bash
-# Update version in package.json
-npm version patch  # or minor/major
-```
+Update `zotero-mcp-plugin/package.json` to the version you want to release.
+Release tags must match that version exactly, using the `vX.Y.Z` form.
 
 ### 2. GitHub Actions Release
 
-The GitHub Actions workflow automatically:
+The release workflow lives at `.github/workflows/release.yml`. It can be run in
+either of two ways:
 
-- Builds the plugin
-- Generates `update.json` with correct version and download links
-- Creates a GitHub release with assets
-- Uploads both `.xpi` and `update.json` files
+- push a tag such as `v1.4.7`
+- run **Release Zotero MCP Plugin** manually from GitHub Actions
 
-### 3. Update URL Resolution
+The workflow installs dependencies with pnpm, audits production and configured
+development dependencies, builds the XPI, generates the update manifests, and
+publishes a GitHub release with the versioned XPI plus the matching
+`update.json` or `update-beta.json`.
+
+### 3. Release Assets
+
+For version `1.4.7`, the stable release should contain:
+
+- `zotero-mcp-plugin-1.4.7.xpi`
+- `update.json`
+
+Prerelease versions publish `update-beta.json` instead.
+
+### 4. Update URL Resolution
 
 - Plugin checks: `https://github.com/oirehT/zotero-mcp-hardened/releases/latest/download/update.json`
 - GitHub redirects `latest` to the most recent release

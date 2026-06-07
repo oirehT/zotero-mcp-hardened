@@ -1,0 +1,88 @@
+name: Release Zotero MCP Plugin
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: zotero-mcp-plugin
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.33.2 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies
+        run: |
+          pnpm audit --prod
+          pnpm audit
+
+      - name: Build plugin
+        run: pnpm run build
+
+      - name: Prepare release assets
+        id: assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          TAG="v${VERSION}"
+
+          if [ "${GITHUB_REF_TYPE}" = "tag" ] && [ "${GITHUB_REF_NAME}" != "${TAG}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package version ${VERSION}" >&2
+            exit 1
+          fi
+
+          node scripts/prepare-release.js
+
+          XPI_NAME="zotero-mcp-plugin-${VERSION}.xpi"
+          cp ".scaffold/build/zotero-mcp-plugin.xpi" ".scaffold/build/${XPI_NAME}"
+
+          if [[ "${VERSION}" == *-* ]]; then
+            UPDATE_MANIFEST="update-beta.json"
+          else
+            UPDATE_MANIFEST="update.json"
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "xpi=.scaffold/build/${XPI_NAME}" >> "$GITHUB_OUTPUT"
+          echo "update_manifest=${UPDATE_MANIFEST}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.assets.outputs.tag }}
+          VERSION: ${{ steps.assets.outputs.version }}
+          XPI: ${{ steps.assets.outputs.xpi }}
+          UPDATE_MANIFEST: ${{ steps.assets.outputs.update_manifest }}
+        run: |
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            gh release upload "${TAG}" "${XPI}" "${UPDATE_MANIFEST}" --clobber
+          else
+            gh release create "${TAG}" "${XPI}" "${UPDATE_MANIFEST}" \
+              --target "${GITHUB_SHA}" \
+              --title "Zotero MCP Plugin ${VERSION}" \
+              --notes "Zotero MCP Plugin ${VERSION}"
+          fi

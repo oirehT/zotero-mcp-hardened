@@ -115,7 +115,7 @@ Get-ChildItem -Path $MODELS_DIR -Recurse -File |
 
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
-Write-Host "  1. Rebuild the plugin: npm run build" -ForegroundColor Gray
+Write-Host "  1. Rebuild the plugin: pnpm run build" -ForegroundColor Gray
 Write-Host "  2. Reload the plugin in Zotero" -ForegroundColor Gray
 Write-Host "  3. Use 'build_semantic_index' to index your library" -ForegroundColor Gray
 Write-Host "  4. Use 'semantic_search' to search!" -ForegroundColor Gray
