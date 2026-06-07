@@ -963,7 +963,7 @@ export class StreamableMCPServer {
             },
             language: {
               type: "string",
-              enum: ["zh", "en", "all"],
+              enum: ["en", "all"],
               description: "Filter by language (default: all)",
             },
           },
@@ -1499,7 +1499,7 @@ export class StreamableMCPServer {
       }
     }
 
-    const SEARCH_TIMEOUT_MS = 25000; // 25 秒超时，低于 keepAlive 的 30 秒
+    const SEARCH_TIMEOUT_MS = 25000; // 25 second timeout, below the 30 second keepAlive
     const searchPromise = handleSearch(searchParams);
     const timeoutPromise = new Promise<never>((_, reject) => {
       setTimeout(
@@ -2022,7 +2022,7 @@ export class StreamableMCPServer {
               ),
               indexedItems: stats.totalItems,
               totalVectors: stats.totalVectors,
-              zhVectors: stats.zhVectors,
+              otherVectors: stats.otherVectors,
               enVectors: stats.enVectors,
             },
             metadata: {

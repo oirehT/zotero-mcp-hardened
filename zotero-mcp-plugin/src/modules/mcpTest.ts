@@ -14,7 +14,6 @@ export interface MCPTestResult {
 
 export async function testMCPIntegration(): Promise<{
   message: string;
-  message_zh: string;
   testResults: {
     summary: {
       total: number;
@@ -254,7 +253,6 @@ export async function testMCPIntegration(): Promise<{
 
   return {
     message: "MCP integration test completed",
-    message_zh: "MCP集成测试完成",
     testResults: {
       summary,
       tests,

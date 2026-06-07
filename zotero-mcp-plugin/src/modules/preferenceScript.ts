@@ -9,13 +9,13 @@ export async function registerPrefsScripts(_window: Window) {
   
   addon.data.prefs = { window: _window };
   
-  // 诊断当前偏好设置状态
+  // Diagnose current preference state
   try {
     const currentEnabled = Zotero.Prefs.get("extensions.zotero.zotero-mcp-plugin.mcp.server.enabled", true);
     const currentPort = Zotero.Prefs.get("extensions.zotero.zotero-mcp-plugin.mcp.server.port", true);
     ztoolkit.log(`[PreferenceScript] [DIAGNOSTIC] Current preferences - enabled: ${currentEnabled}, port: ${currentPort}`);
     
-    // 检查是否是环境兼容性问题
+    // Check whether this is an environment compatibility issue
     const doc = _window.document;
     ztoolkit.log(`[PreferenceScript] [DIAGNOSTIC] Document available: ${!!doc}`);
     
@@ -23,7 +23,7 @@ export async function registerPrefsScripts(_window: Window) {
       const prefElements = doc.querySelectorAll('[preference]');
       ztoolkit.log(`[PreferenceScript] [DIAGNOSTIC] Found ${prefElements.length} preference-bound elements`);
       
-      // 特别检查服务器启用元素
+      // Specifically check the server-enabled element
       const serverEnabledElement = doc.querySelector('#zotero-prefpane-zotero-mcp-plugin-mcp-server-enabled');
       if (serverEnabledElement) {
         ztoolkit.log(`[PreferenceScript] [DIAGNOSTIC] Server enabled element found, initial checked state: ${serverEnabledElement.hasAttribute('checked')}`);
@@ -213,7 +213,7 @@ function bindPrefEvents() {
 
       ztoolkit.log(`[PreferenceScript] Generated config for ${clientType}`);
     } catch (error) {
-      addon.data.prefs!.window.alert(`配置生成失败: ${error}`);
+      addon.data.prefs!.window.alert(`Config generation failed: ${error}`);
       ztoolkit.log(`[PreferenceScript] Config generation failed: ${error}`, "error");
     }
   });
@@ -223,7 +223,7 @@ function bindPrefEvents() {
       const success = await ClientConfigGenerator.copyToClipboard(currentConfig);
       if (success) {
         const originalText = copyConfigButton.textContent;
-        copyConfigButton.textContent = "已复制!";
+        copyConfigButton.textContent = "Copied!";
         copyConfigButton.style.backgroundColor = "var(--copy-ok-bg)";
         copyConfigButton.style.color = "var(--tog-knob)";
         setTimeout(() => {
@@ -232,10 +232,10 @@ function bindPrefEvents() {
           copyConfigButton.style.color = "";
         }, 2000);
       } else {
-        addon.data.prefs!.window.alert("自动复制失败，请手动复制配置内容");
+        addon.data.prefs!.window.alert("Auto-copy failed, please copy the configuration manually");
       }
     } catch (error) {
-      addon.data.prefs!.window.alert(`复制失败: ${error}`);
+      addon.data.prefs!.window.alert(`Copy failed: ${error}`);
       ztoolkit.log(`[PreferenceScript] Copy failed: ${error}`, "error");
     }
   });
@@ -245,7 +245,7 @@ function bindPrefEvents() {
       const success = await ClientConfigGenerator.copyToClipboard(currentGuide);
       if (success) {
         const originalText = copyInstrButton.textContent;
-        copyInstrButton.textContent = "已复制!";
+        copyInstrButton.textContent = "Copied!";
         copyInstrButton.style.backgroundColor = "var(--copy-ok-bg)";
         copyInstrButton.style.color = "var(--tog-knob)";
         setTimeout(() => {
@@ -254,10 +254,10 @@ function bindPrefEvents() {
           copyInstrButton.style.color = "";
         }, 2000);
       } else {
-        addon.data.prefs!.window.alert("自动复制失败，请手动复制说明内容");
+        addon.data.prefs!.window.alert("Auto-copy failed, please copy the instructions manually");
       }
     } catch (error) {
-      addon.data.prefs!.window.alert(`复制失败: ${error}`);
+      addon.data.prefs!.window.alert(`Copy failed: ${error}`);
       ztoolkit.log(`[PreferenceScript] Copy instructions failed: ${error}`, "error");
     }
   });
@@ -635,7 +635,7 @@ function bindEmbeddingSettings(doc: Document) {
         // Show warning alert
         addon.data.prefs!.window.alert(
           getString("pref-embedding-model-change-warning" as any) ||
-          "模型已更改，已有索引可能不兼容。请测试连接后重建索引。\n\nModel changed. Existing index may be incompatible. Please test connection and rebuild index."
+          "Model changed. Existing index may be incompatible. Please test connection and rebuild index."
         );
       }
     } catch (e) {
@@ -1038,7 +1038,7 @@ function bindSemanticStatsSettings(doc: Document) {
 
   const totalItemsEl = doc?.querySelector("#semantic-stats-total-items") as HTMLElement;
   const totalVectorsEl = doc?.querySelector("#semantic-stats-total-vectors") as HTMLElement;
-  const zhVectorsEl = doc?.querySelector("#semantic-stats-zh-vectors") as HTMLElement;
+  const otherVectorsEl = doc?.querySelector("#semantic-stats-other-vectors") as HTMLElement;
   const enVectorsEl = doc?.querySelector("#semantic-stats-en-vectors") as HTMLElement;
   const cachedItemsEl = doc?.querySelector("#semantic-stats-cached-items") as HTMLElement;
   const cacheSizeEl = doc?.querySelector("#semantic-stats-cache-size") as HTMLElement;
@@ -1495,7 +1495,7 @@ function bindSemanticStatsSettings(doc: Document) {
       // Update UI
       if (totalItemsEl) totalItemsEl.textContent = String(stats.indexStats.totalItems);
       if (totalVectorsEl) totalVectorsEl.textContent = String(stats.indexStats.totalVectors);
-      if (zhVectorsEl) zhVectorsEl.textContent = String(stats.indexStats.zhVectors);
+      if (otherVectorsEl) otherVectorsEl.textContent = String(stats.indexStats.otherVectors);
       if (enVectorsEl) enVectorsEl.textContent = String(stats.indexStats.enVectors);
       if (cachedItemsEl) cachedItemsEl.textContent = String(stats.indexStats.cachedContentItems || 0);
       if (cacheSizeEl) cacheSizeEl.textContent = formatSize(stats.indexStats.cachedContentSizeBytes || 0);

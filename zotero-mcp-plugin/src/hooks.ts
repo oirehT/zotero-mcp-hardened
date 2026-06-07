@@ -1,5 +1,5 @@
 import { BasicExampleFactory } from "./modules/examples";
-import { httpServer } from "./modules/httpServer"; // 使用单例导出
+import { httpServer } from "./modules/httpServer"; // Use singleton export
 import { serverPreferences } from "./modules/serverPreferences";
 import { getString, initLocale } from "./utils/locale";
 import { registerPrefsScripts } from "./modules/preferenceScript";
@@ -443,7 +443,7 @@ function unregisterItemNotifier() {
 }
 
 async function onStartup() {
-  // 进程诊断 - 检测当前运行在哪个进程中
+  // Process diagnostics: detect the current process
   try {
     const runtime = (Cc as any)["@mozilla.org/xre/app-info;1"]?.getService(
       (Ci as any).nsIXULRuntime,
@@ -492,7 +492,7 @@ async function onStartup() {
   // Check if this is first installation and show config prompt
   checkFirstInstallation();
 
-  // 启动HTTP服务器
+  // Start HTTP server
   try {
     const port = serverPreferences.getPort();
     const enabled = serverPreferences.isServerEnabled();
@@ -524,9 +524,9 @@ async function onStartup() {
     );
   }
 
-  // 监听偏好设置变化
+  // Listen for preference changes
   serverPreferences.addObserver(async (name) => {
-    if (isShuttingDown) return; // 关闭时不处理偏好变化
+    if (isShuttingDown) return; // Ignore preference changes during shutdown
     ztoolkit.log(`[MCP Plugin] Preference changed: ${name}`);
 
     if (
@@ -609,7 +609,7 @@ function onShutdown(): void {
   clearAllPendingTimeouts();
   ztoolkit.log("[MCP Plugin] [SHUTDOWN 1/7] Done");
 
-  // 取消注册条目变化监听器
+  // Unregister item-change notifier
   try {
     ztoolkit.log("[MCP Plugin] [SHUTDOWN 2/7] Unregistering item notifier...");
     unregisterItemNotifier();
@@ -619,7 +619,7 @@ function onShutdown(): void {
     ztoolkit.log(`[MCP Plugin] [SHUTDOWN 2/7] Error: ${err.message}`, "error");
   }
 
-  // 注销语义索引状态列
+  // Unregister semantic index status column
   try {
     ztoolkit.log(
       "[MCP Plugin] [SHUTDOWN 3/7] Unregistering semantic index column...",
@@ -631,7 +631,7 @@ function onShutdown(): void {
     ztoolkit.log(`[MCP Plugin] [SHUTDOWN 3/7] Error: ${err.message}`, "error");
   }
 
-  // 停止HTTP服务器 - 这是阻止进程退出的最可能原因
+  // Stop HTTP server, the most likely reason the process stays alive
   try {
     ztoolkit.log(
       `[MCP Plugin] [SHUTDOWN 4/7] Stopping HTTP server (running: ${httpServer.isServerRunning()})...`,
@@ -647,7 +647,7 @@ function onShutdown(): void {
     ztoolkit.log(`[MCP Plugin] [SHUTDOWN 4/7] Error: ${err.message}`, "error");
   }
 
-  // 停止语义搜索服务
+  // Stop semantic search service
   try {
     ztoolkit.log(
       "[MCP Plugin] [SHUTDOWN 5/7] Stopping semantic search service...",
@@ -666,7 +666,7 @@ function onShutdown(): void {
     ztoolkit.log(`[MCP Plugin] [SHUTDOWN 5/7] Error: ${err.message}`, "error");
   }
 
-  // 停止嵌入服务
+  // Stop embedding service
   try {
     ztoolkit.log("[MCP Plugin] [SHUTDOWN 6/7] Stopping embedding service...");
     const {
@@ -680,7 +680,7 @@ function onShutdown(): void {
     ztoolkit.log(`[MCP Plugin] [SHUTDOWN 6/7] Error: ${err.message}`, "error");
   }
 
-  // 关闭向量存储数据库
+  // Close vector store database
   try {
     ztoolkit.log("[MCP Plugin] [SHUTDOWN 7/7] Closing vector store...");
     const { resetVectorStore } = require("./modules/semantic/vectorStore");
@@ -731,14 +731,14 @@ async function onPrefsEvent(type: string, data: { [key: string]: any }) {
         `===MCP=== [hooks.ts] [DIAGNOSTIC] Loading preference scripts...`,
       );
 
-      // 诊断设置面板加载环境
+      // Diagnose preference pane load environment
       try {
         if (data.window) {
           ztoolkit.log(
             `===MCP=== [hooks.ts] [DIAGNOSTIC] Preference window available`,
           );
 
-          // 检查当前偏好设置状态
+          // Check current preference state
           const currentEnabled = Zotero.Prefs.get(
             "extensions.zotero.zotero-mcp-plugin.mcp.server.enabled",
             true,
@@ -751,7 +751,7 @@ async function onPrefsEvent(type: string, data: { [key: string]: any }) {
             `===MCP=== [hooks.ts] [DIAGNOSTIC] Current prefs at panel load - enabled: ${currentEnabled}, port: ${currentPort}`,
           );
 
-          // 检查preference元素是否存在
+          // Check whether preference elements exist
           trackedSetTimeout(() => {
             try {
               const doc = data.window.document;
@@ -835,11 +835,11 @@ function checkFirstInstallation() {
 function showFirstInstallPrompt() {
   try {
     // Use bilingual text for first install prompt
-    const title = "欢迎使用 Zotero MCP 插件 / Welcome to Zotero MCP Plugin";
+    const title = "Welcome to Zotero MCP Plugin";
     const promptText =
-      "感谢安装 Zotero MCP 插件！为了开始使用，您需要为您的 AI 客户端生成配置文件。是否现在打开设置页面来生成配置？\n使用技巧请关注设置页面公众号。\n\nThank you for installing the Zotero MCP Plugin! To get started, you need to generate configuration files for your AI clients. Would you like to open the settings page now to generate configurations?";
-    const openPrefsText = "打开设置 / Open Settings";
-    const laterText = "稍后配置 / Configure Later";
+      "Thank you for installing the Zotero MCP Plugin! To get started, you need to generate configuration files for your AI clients. Would you like to open the settings page now to generate configurations?";
+    const openPrefsText = "Open Settings";
+    const laterText = "Configure Later";
 
     // Use a simple window confirm instead of Services.prompt for compatibility
     const message = `${title}\n\n${promptText}\n\n${openPrefsText} (OK) / ${laterText} (Cancel)`;

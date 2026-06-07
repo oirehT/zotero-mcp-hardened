@@ -250,7 +250,7 @@
 
   <vbox flex="1">
 
-    <!-- ① MCP 服务器 -->
+    <!-- MCP server -->
     <html:div class="zmp-s">
       <html:div class="zmp-s-title" data-l10n-id="pref-server-title"></html:div>
       <html:div class="zmp-s-desc" data-l10n-id="pref-section-server-desc"></html:div>
@@ -309,7 +309,7 @@
         </html:label>
       </html:div>
 
-      <!-- 内容设置 (merged into MCP server section) -->
+      <!-- Content settings (merged into MCP server section) -->
       <html:div class="zmp-sl" data-l10n-id="pref-mcp-settings-title"></html:div>
 
       <html:div class="zmp-f2">
@@ -436,13 +436,13 @@
       </html:div>
     </html:div>
 
-    <!-- 服务器关闭时的提示 -->
+    <!-- Server disabled hint -->
     <html:div id="server-off-hint" class="zmp-server-off-hint" data-l10n-id="pref-server-off-hint"></html:div>
 
-    <!-- ②③④ 服务器开启时才显示 -->
+    <!-- Server-dependent content -->
     <html:div id="server-dependent-content">
 
-      <!-- ② 客户端配置 -->
+      <!-- Client configuration -->
       <html:div class="zmp-s">
         <html:div class="zmp-s-title" data-l10n-id="pref-client-config-title"></html:div>
         <html:div class="zmp-s-desc" data-l10n-id="pref-section-client-desc"></html:div>
@@ -489,7 +489,7 @@
         </html:div>
       </html:div>
 
-      <!-- ④ 语义搜索 -->
+      <!-- Semantic search -->
       <html:div class="zmp-s">
         <html:div class="zmp-s-title" data-l10n-id="pref-embedding-title"></html:div>
         <html:div class="zmp-s-desc" data-l10n-id="pref-section-semantic-desc"></html:div>
@@ -523,12 +523,12 @@
               <html:option value="custom" data-l10n-id="pref-embedding-provider-custom"></html:option>
               <html:option value="openai">OpenAI</html:option>
               <html:option value="google">Google Gemini</html:option>
-              <html:option value="alibaba">阿里云百炼</html:option>
-              <html:option value="zhipu">智谱 AI</html:option>
+              <html:option value="alibaba">Alibaba Bailian</html:option>
+              <html:option value="zhipu">Zhipu AI</html:option>
               <html:option value="openrouter">OpenRouter</html:option>
-              <html:option value="siliconflow">硅基流动</html:option>
+              <html:option value="siliconflow">SiliconFlow</html:option>
               <html:option value="voyage">Voyage AI</html:option>
-              <html:option value="ollama">Ollama (本地)</html:option>
+              <html:option value="ollama">Ollama (local)</html:option>
             </html:select>
           </html:div>
           <html:div class="zmp-fg">
@@ -687,8 +687,8 @@
                 <html:div style="font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px" data-l10n-id="pref-detail-index-section"></html:div>
                 <html:div class="zmp-is">
                   <html:div class="zmp-is-r">
-                    <html:span class="zmp-is-l" data-l10n-id="pref-semantic-stats-zh-vectors"></html:span>
-                    <html:span class="zmp-is-v" id="semantic-stats-zh-vectors">-</html:span>
+                    <html:span class="zmp-is-l" data-l10n-id="pref-semantic-stats-other-vectors"></html:span>
+                    <html:span class="zmp-is-v" id="semantic-stats-other-vectors">-</html:span>
                   </html:div>
                   <html:div class="zmp-is-r">
                     <html:span class="zmp-is-l" data-l10n-id="pref-semantic-stats-en-vectors"></html:span>
@@ -752,11 +752,8 @@
 
     </html:div><!-- /server-dependent-content -->
 
-    <!-- ⑤ Footer -->
+    <!-- Footer -->
     <html:div class="zmp-ft">
-      <html:div class="zmp-ft-qr">
-        <html:img src="chrome://__addonRef__/content/icons/mp-qrcode.jpg" alt="公众号二维码" />
-      </html:div>
       <html:div class="zmp-ft-text">
         <html:label
           data-l10n-id="pref-help"

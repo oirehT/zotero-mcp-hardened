@@ -7,39 +7,39 @@
 declare let ztoolkit: ZToolkit;
 
 export interface ContentControl {
-  preserveOriginal?: boolean;        // 保持原文完整性 (默认true)
-  allowExtended?: boolean;           // 允许超出模式默认长度 (默认false)
-  expandIfImportant?: boolean;       // 重要内容时自动扩展 (默认true)
+  preserveOriginal?: boolean;        // Preserve original content integrity (default true)
+  allowExtended?: boolean;           // Allow exceeding the mode default length (default false)
+  expandIfImportant?: boolean;       // Auto-expand important content (default true)
   
-  // 长度控制覆盖
-  maxContentLength?: number;         // 覆盖模式默认长度限制
-  maxAttachments?: number;           // 覆盖附件数量限制  
-  maxNotes?: number;                 // 覆盖笔记数量限制
+  // Length-control overrides
+  maxContentLength?: number;         // Override mode default length limit
+  maxAttachments?: number;           // Override attachment count limit
+  maxNotes?: number;                 // Override note count limit
   
-  // 质量控制
-  prioritizeCompleteness?: boolean;  // 优先完整性而非长度 (默认false)
-  requireContext?: boolean;          // 要求上下文完整性 (默认true)
-  minSentenceLength?: number;        // 最小句子长度阈值
+  // Quality controls
+  prioritizeCompleteness?: boolean;  // Prioritise completeness over length (default false)
+  requireContext?: boolean;          // Require context completeness (default true)
+  minSentenceLength?: number;        // Minimum sentence length threshold
   
-  // 智能扩展策略
+  // Smart expansion strategy
   smartExpansion?: {
-    enabled?: boolean;               // 启用智能扩展 (默认false)
+    enabled?: boolean;               // Enable smart expansion (default false)
     trigger?: 'high_importance' | 'user_query' | 'context_needed';
-    maxExpansionRatio?: number;      // 最大扩展倍数 (如1.5x)
+    maxExpansionRatio?: number;      // Maximum expansion ratio, such as 1.5x
   };
 }
 
 export interface ProcessedSentence {
   content: string;
-  position: number;                  // 在文档中的位置 (0-1)
-  importance: number;                // 综合重要性评分 (0-1)
-  tfIdfScore: number;               // TF-IDF评分
-  textRankScore: number;            // TextRank评分
-  positionWeight: number;           // 位置权重
-  length: number;                   // 句子长度
-  keywords: string[];               // 关键词
-  isComplete: boolean;              // 是否是完整句子
-  contentType?: 'main_content' | 'reference' | 'supplementary'; // 内容类型
+  position: number;                  // Position in the document (0-1)
+  importance: number;                // Combined importance score (0-1)
+  tfIdfScore: number;               // TF-IDF score
+  textRankScore: number;            // TextRank score
+  positionWeight: number;           // Position weight
+  length: number;                   // Sentence length
+  keywords: string[];               // Keywords
+  isComplete: boolean;              // Whether the sentence is complete
+  contentType?: 'main_content' | 'reference' | 'supplementary'; // Content type
 }
 
 export interface ProcessingResult {

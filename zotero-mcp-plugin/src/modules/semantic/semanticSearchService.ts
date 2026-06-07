@@ -25,7 +25,7 @@ const PREF_INDEX_PROGRESS = 'extensions.zotero.zotero-mcp-plugin.semantic.indexP
 export interface SemanticSearchOptions {
   topK?: number;              // Number of results
   minScore?: number;          // Minimum similarity threshold
-  language?: 'zh' | 'en' | 'all';  // Language filter
+  language?: 'en' | 'all';    // Language filter
   itemKeys?: string[];        // Limit to specific items
 }
 
@@ -61,7 +61,7 @@ export interface SemanticServiceStats {
   indexStats: {
     totalVectors: number;
     totalItems: number;
-    zhVectors: number;
+    otherVectors: number;
     enVectors: number;
     cachedContentItems?: number;
     cachedContentSizeBytes?: number;
@@ -979,7 +979,7 @@ export class SemanticSearchService {
           compatible: false,
           storedDimensions,
           currentDimensions,
-          message: `维度不匹配: 已存储=${storedDimensions}, 当前配置=${currentDimensions}。请使用"重建索引"按钮清除旧数据后重新构建。 / Dimension mismatch: stored=${storedDimensions}, current=${currentDimensions}. Please use "Rebuild Index" to clear old data and rebuild.`
+          message: `Dimension mismatch: stored=${storedDimensions}, current=${currentDimensions}. Please use "Rebuild Index" to clear old data and rebuild.`
         };
       }
 
