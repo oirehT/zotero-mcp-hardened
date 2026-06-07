@@ -40,7 +40,6 @@ pnpm run start      # Development with hot reload
 ### Localization
 
 - English: `addon/locale/en-US/preferences.ftl`
-- Chinese: `addon/locale/zh-CN/preferences.ftl`
 
 ### Release Workflow
 
@@ -48,7 +47,7 @@ See `../.claude/skills/release.md` for automated release process.
 
 Key points:
 
-- Version in: `package.json`, `README.md`, `docs/README-zh.md` (badge), `update.json`
+- Version in: `package.json`, `README.md`, `update.json`
 - Build: `pnpm run build` -> `.scaffold/build/zotero-mcp-plugin.xpi`
 - `addon/` is gitignored — use `git add -f` for files under it
 - Release assets: XPI (renamed to `zotero-mcp-plugin-X.Y.Z.xpi`) + `update.json`
@@ -57,4 +56,4 @@ Key points:
 
 - Use ztoolkit.log for logging
 - Follow existing patterns in codebase
-- Chinese comments are acceptable
+- Keep comments and user-facing strings in English

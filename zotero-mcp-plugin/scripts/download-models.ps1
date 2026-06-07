@@ -56,16 +56,6 @@ Write-Host "  This may take a while (~50MB total)..." -ForegroundColor Gray
 # Model configurations
 $MODELS = @(
     @{
-        Name = "bge-small-zh-v1.5"
-        Repo = "Xenova/bge-small-zh-v1.5"
-        Files = @(
-            "config.json",
-            "tokenizer.json",
-            "tokenizer_config.json",
-            "onnx/model_quantized.onnx"
-        )
-    },
-    @{
         Name = "bge-small-en-v1.5"
         Repo = "Xenova/bge-small-en-v1.5"
         Files = @(

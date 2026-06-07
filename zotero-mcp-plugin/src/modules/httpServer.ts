@@ -59,7 +59,7 @@ export class HttpServer {
   }
 
   public start(port: number) {
-    // 进程诊断
+    // Process diagnostics
     try {
       const pid = (Cc["@mozilla.org/xre/app-info;1"]?.getService(Ci.nsIXULRuntime) as any)?.processID;
       ztoolkit.log(`[HttpServer] start() called - port: ${port}, PID: ${pid}, isRunning: ${this.isRunning}`);
@@ -86,9 +86,9 @@ export class HttpServer {
         "@mozilla.org/network/server-socket;1"
       ].createInstance(Ci.nsIServerSocket);
 
-      // init方法参数：端口，是否仅允许回环地址，backlog队列大小
-      // loopbackOnly=true: 仅监听 127.0.0.1
-      // loopbackOnly=false: 监听 0.0.0.0 (所有接口)
+      // init parameters: port, loopback-only flag, backlog size
+      // loopbackOnly=true: listen only on 127.0.0.1
+      // loopbackOnly=false: listen on 0.0.0.0 (all interfaces)
       const loopbackOnly = !serverPreferences.isRemoteAccessAllowed();
       Zotero.debug(`[HttpServer] Binding to ${loopbackOnly ? '127.0.0.1' : '0.0.0.0'}:${port}`);
       this.serverSocket.init(port, loopbackOnly, -1);
@@ -278,7 +278,7 @@ export class HttpServer {
         input = transport.openInputStream(0, 0, 0);
         output = transport.openOutputStream(0, 0, 0);
 
-        // 使用转换输入流来正确处理UTF-8编码
+        // Use converter input stream to handle UTF-8 correctly
         const converterStream = Cc[
           "@mozilla.org/intl/converter-input-stream;1"
         ].createInstance(Ci.nsIConverterInputStream);
@@ -289,7 +289,7 @@ export class HttpServer {
         );
         sin.init(input);
 
-        // 改进请求读取逻辑 - 读取完整的HTTP请求（包括body）
+        // Improved request reading: read the full HTTP request, including body
         let requestText = "";
         let totalBytesRead = 0;
         const maxRequestSize = 1024 * 1024; // 1MB max request size
@@ -416,7 +416,7 @@ export class HttpServer {
           `[HttpServer] Received request: ${requestLine} (${requestText.length} bytes)`,
         );
 
-        // 验证请求格式
+        // Validate request format
         if (!requestLine || !requestLine.includes("HTTP/")) {
           ztoolkit.log(
             `[HttpServer] Invalid request format - RequestLine: "${requestLine || '<empty>'}", TotalBytes: ${totalBytesRead}, RequestLength: ${requestText.length}, RequestPreview: "${requestText.substring(0, 100).replace(/\r?\n/g, '\\n')}"`,
@@ -454,7 +454,7 @@ export class HttpServer {
           const query = new URLSearchParams(url.search);
           const path = url.pathname;
           
-          // 提取POST请求的body
+          // Extract POST request body
           let requestBody = "";
           if (method === "POST") {
             const bodyStart = requestText.indexOf("\r\n\r\n");
@@ -686,7 +686,7 @@ export class HttpServer {
         // Remove transport from tracking
         this.activeTransports.delete(transport);
 
-        // 确保资源清理
+        // Ensure resource cleanup
         try {
           if (output) {
             output.close();
@@ -1027,7 +1027,7 @@ private getCapabilities() {
 }
 }
 
-// 进程诊断 - 记录 HttpServer 单例创建时机
+// Process diagnostics: record when the HttpServer singleton is created
 try {
   const runtime = Cc["@mozilla.org/xre/app-info;1"]?.getService(Ci.nsIXULRuntime) as any;
   ztoolkit.log(`[HttpServer] Singleton created - PID: ${runtime?.processID}, processType: ${runtime?.processType}`);

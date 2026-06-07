@@ -627,7 +627,7 @@ export async function handleGetItemNotes(
     // For now, return empty result to maintain compatibility
     const allNotes: any[] = [];
 
-    // 添加分页支持
+    // Add pagination support
     const limit = Math.min(parseInt(query.get("limit") || "20", 10), 100);
     const offset = parseInt(query.get("offset") || "0", 10);
     const totalCount = allNotes.length;
@@ -638,7 +638,7 @@ export async function handleGetItemNotes(
       statusText: "OK",
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({
-        // 元数据在前
+        // Metadata first
         pagination: {
           limit,
           offset,
@@ -649,7 +649,7 @@ export async function handleGetItemNotes(
         version: "2.0",
         endpoint: "items/notes",
         itemKey,
-        // 数据在后
+        // Data after metadata
         notes: paginatedNotes,
       }),
     };
@@ -724,7 +724,7 @@ export async function handleGetItemAnnotations(
       );
     }
 
-    // 添加分页支持
+    // Add pagination support
     const limit = Math.min(parseInt(query.get("limit") || "20", 10), 100);
     const offset = parseInt(query.get("offset") || "0", 10);
     const totalCount = filteredAnnotations.length;
@@ -735,7 +735,7 @@ export async function handleGetItemAnnotations(
       statusText: "OK",
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({
-        // 元数据在前
+        // Metadata first
         pagination: {
           limit,
           offset,
@@ -746,7 +746,7 @@ export async function handleGetItemAnnotations(
         version: "2.0",
         endpoint: "items/annotations",
         itemKey,
-        // 数据在后
+        // Data after metadata
         annotations: paginatedAnnotations,
       }),
     };

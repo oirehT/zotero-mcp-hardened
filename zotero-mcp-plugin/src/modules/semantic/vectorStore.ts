@@ -14,7 +14,7 @@ export interface VectorRecord {
   itemKey: string;
   chunkId: number;
   vector: Float32Array;
-  language: 'zh' | 'en';
+  language: 'en';
   chunkText: string;
   metadata?: Record<string, any>;
 }
@@ -47,7 +47,7 @@ export interface IndexStatus {
 export interface VectorStoreStats {
   totalVectors: number;
   totalItems: number;
-  zhVectors: number;
+  otherVectors: number;
   enVectors: number;
   dbSizeBytes?: number;
   // Content cache stats
@@ -196,7 +196,7 @@ export class VectorStore {
       try {
         new ztoolkit.ProgressWindow("Zotero MCP Plugin", { closeOtherProgressWindows: false })
           .createLine({
-            text: "检测到索引数据库损坏，已自动重建。旧文件已备份。\nCorrupted index database detected and rebuilt. Old file backed up.",
+            text: "Corrupted index database detected and rebuilt. Old file backed up.",
             type: "default",
           })
           .show();
@@ -231,7 +231,7 @@ export class VectorStore {
         try {
           new ztoolkit.ProgressWindow("Zotero MCP Plugin", { closeOtherProgressWindows: false })
             .createLine({
-              text: "检测到索引数据库严重损坏，已自动重建。旧文件已备份。\nSeverely corrupted index database detected and rebuilt. Old file backed up.",
+              text: "Severely corrupted index database detected and rebuilt. Old file backed up.",
               type: "default",
             })
             .show();
@@ -256,7 +256,7 @@ export class VectorStore {
         item_key TEXT NOT NULL,
         chunk_id INTEGER NOT NULL,
         vector BLOB NOT NULL,
-        language TEXT NOT NULL CHECK(language IN ('zh', 'en')),
+        language TEXT NOT NULL CHECK(language IN ('en')),
         chunk_text TEXT,
         dimensions INTEGER NOT NULL,
         created_at INTEGER DEFAULT (strftime('%s', 'now')),
@@ -381,7 +381,7 @@ export class VectorStore {
     try {
       new ztoolkit.ProgressWindow("Zotero MCP Plugin", { closeOtherProgressWindows: false })
         .createLine({
-          text: `正在优化向量数据库结构，共 ${remaining} 条记录...\nOptimizing vector database structure, ${remaining} records...`,
+          text: `Optimizing vector database structure, ${remaining} records...`,
           type: "default",
         })
         .show();
@@ -509,7 +509,7 @@ export class VectorStore {
     queryVector: Float32Array,
     options: {
       topK?: number;
-      language?: 'zh' | 'en' | 'all';
+      language?: 'en' | 'all';
       itemKeys?: string[];
       minScore?: number;
     } = {}
@@ -1165,9 +1165,6 @@ export class VectorStore {
     const items = await this.db.valueQueryAsync(
       `SELECT COUNT(DISTINCT item_key) FROM embeddings`
     );
-    const zh = await this.db.valueQueryAsync(
-      `SELECT COUNT(*) FROM embeddings WHERE language = 'zh'`
-    );
     const en = await this.db.valueQueryAsync(
       `SELECT COUNT(*) FROM embeddings WHERE language = 'en'`
     );
@@ -1231,7 +1228,7 @@ export class VectorStore {
     return {
       totalVectors: total || 0,
       totalItems: items || 0,
-      zhVectors: zh || 0,
+      otherVectors: Math.max(0, (total || 0) - (en || 0)),
       enVectors: en || 0,
       cachedContentItems: cachedItems || 0,
       cachedContentSizeBytes: cachedSize || 0,

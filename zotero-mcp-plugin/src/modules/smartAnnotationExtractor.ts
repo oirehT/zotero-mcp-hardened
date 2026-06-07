@@ -52,17 +52,17 @@ export interface SmartAnnotationResponse {
     userSettings: any;
     processingTime: string;
     pagination?: {
-      total: number;          // 总结果数
-      offset: number;         // 当前偏移量
-      limit: number;          // 当前限制
-      hasMore: boolean;       // 是否有更多结果
-      nextOffset?: number;    // 下一页偏移量（如果有更多）
+      total: number;          // Total result count
+      offset: number;         // Current offset
+      limit: number;          // Current limit
+      hasMore: boolean;       // Whether more results are available
+      nextOffset?: number;    // Next page offset when more results are available
     };
     stats: {
-      foundCount: number;     // 找到的原始数量
-      filteredCount: number; // 过滤后数量
-      returnedCount: number; // 实际返回数量
-      skippedCount?: number;  // 跳过的数量（压缩时）
+      foundCount: number;     // Original count found
+      filteredCount: number; // Count after filtering
+      returnedCount: number; // Actual returned count
+      skippedCount?: number;  // Count skipped during compression
     };
   };
   data: AnnotationResult[];
@@ -73,14 +73,14 @@ export class SmartAnnotationExtractor {
 
   // Common Zotero annotation colors with their names
   private static readonly COLOR_MAP: Record<string, string[]> = {
-    '#ffd400': ['yellow', 'question', '黄色'],
-    '#ff6666': ['red', 'error', 'important', '红色'],
-    '#5fb236': ['green', 'agree', '绿色'],
-    '#2ea8e5': ['blue', 'info', '蓝色'],
-    '#a28ae5': ['purple', 'definition', '紫色'],
-    '#e56eee': ['magenta', 'pink', '粉色'],
-    '#f19837': ['orange', 'todo', '橙色'],
-    '#aaaaaa': ['gray', 'grey', '灰色'],
+    '#ffd400': ['yellow', 'question'],
+    '#ff6666': ['red', 'error', 'important'],
+    '#5fb236': ['green', 'agree'],
+    '#2ea8e5': ['blue', 'info'],
+    '#a28ae5': ['purple', 'definition'],
+    '#e56eee': ['magenta', 'pink'],
+    '#f19837': ['orange', 'todo'],
+    '#aaaaaa': ['gray', 'grey'],
   };
 
   constructor() {
@@ -426,7 +426,7 @@ export class SmartAnnotationExtractor {
           },
           stats: {
             foundCount: annotations.length,
-            filteredCount: totalCount, // 已过滤过相关性的数量
+            filteredCount: totalCount, // Count already filtered by relevance
             returnedCount: processed.includedCount,
             skippedCount: processed.originalCount ? processed.originalCount - processed.includedCount : undefined
           }
@@ -773,7 +773,7 @@ export class SmartAnnotationExtractor {
     
     const stopWords = new Set([
       'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by',
-      '的', '了', '在', '是', '和', '与', '或', '但', '然而', '因此', '所以', '这', '那', '有', '没有'
+      'the', 'a', 'an', 'and', 'or', 'but', 'however', 'therefore'
     ]);
     
     const words = text
@@ -798,7 +798,7 @@ export class SmartAnnotationExtractor {
    */
   private estimateTokens(content: any): number {
     const text = JSON.stringify(content);
-    // Rough estimation: 1 token ≈ 3.5 characters for mixed Chinese/English
+    // Rough estimation: 1 token is about 3.5 characters for mixed content
     return Math.ceil(text.length / 3.5);
   }
 

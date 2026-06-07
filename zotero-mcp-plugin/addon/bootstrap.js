@@ -43,8 +43,8 @@ async function onMainWindowUnload({ window }, reason) {
 }
 
 async function shutdown({ id, version, resourceURI, rootURI }, reason) {
-  // 始终执行清理 - 即使是 APP_SHUTDOWN 也要关闭 HTTP 服务器和定时器
-  // 否则 server socket 会阻止进程退出
+  // Always clean up, even during APP_SHUTDOWN, so HTTP server resources and timers are released
+  // Otherwise the server socket can keep the process alive
   await Zotero.__addonInstance__?.hooks.onShutdown();
 
   if (reason === APP_SHUTDOWN) {

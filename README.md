@@ -1,14 +1,12 @@
 # Zotero MCP - Model Context Protocol Integration for Zotero
 
 Zotero MCP is an open-source project designed to integrate powerful AI capabilities with the leading reference management tool, Zotero, through the Model Context Protocol (MCP). This hardened fork provides a Zotero plugin with an integrated MCP server, giving AI assistants (like Claude) the ability to interact with your local Zotero library.
-_This README is also available in: [简体中文](./docs/README-zh.md) | English._
 [![GitHub](https://img.shields.io/badge/GitHub-zotero--mcp-blue?logo=github)](https://github.com/oirehT/zotero-mcp-hardened)
 [![zotero target version](https://img.shields.io/badge/Zotero-7-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org)
 [![Version](https://img.shields.io/badge/Version-1.4.7-brightgreen)]()
 [![EN doc](https://img.shields.io/badge/Document-English-blue.svg)](README.md)
-[![中文文档](https://img.shields.io/badge/文档-中文-blue.svg)](docs/README-zh.md)
 
 ---
 
@@ -17,12 +15,6 @@ _This README is also available in: [简体中文](./docs/README-zh.md) | English
 This fork keeps the MCP server local by default and exposes write operations on
 that loopback-only server. See [Security Hardening](docs/SECURITY_HARDENING.md)
 for the operating rules and verification commands.
-
-## Fork us on Wechat
-
-| MP                           |             Forum             |
-| :--------------------------- | :---------------------------: |
-| ![Reading PDF](./IMG/MP.jpg) | ![Contact us](./IMG/0320.jpg) |
 
 ## Project Overview
 
@@ -101,7 +93,7 @@ The plugin uses Streamable HTTP, which enables real-time bidirectional communica
 - **Cherry Studio** and **Gemini CLI**: Streamable HTTP configuration
 - **Custom implementations**: Generic HTTP MCP configuration
 
-For detailed client-specific configuration instructions, see the [Chinese README](./docs/README-zh.md).
+For client-specific configuration instructions, generate the relevant client configuration from the Zotero plugin preferences.
 
 ---
 
@@ -187,22 +179,6 @@ Example configuration for Claude Desktop:
 - **Client Configuration Generator**: Automatically generates configuration for various AI clients
 - **Security**: Local-only operation ensuring complete data privacy
 - **User-Friendly**: Easy configuration through Zotero preferences interface
-
----
-
-## Screenshots
-
-Here are some screenshots demonstrating the functionality of Zotero MCP:
-
-| Feature                                |                       Screenshot                       |
-| :------------------------------------- | :----------------------------------------------------: |
-| **Feature Demonstration**              |      ![Feature Demonstration](./IMG/功能说明.png)      |
-| **Literature Search**                  |        ![Literature Search](./IMG/文献检索.png)        |
-| **Viewing Metadata**                   |       ![Viewing Metadata](./IMG/元数据查看.png)        |
-| **Full-text Reading 1**                |      ![Full-text Reading 1](./IMG/全文读取1.png)       |
-| **Full-text Reading 2**                |      ![Full-text Reading 2](./IMG/全文读取2.png)       |
-| **Searching Attachments (Gemini CLI)** | ![Searching Attachments](./IMG/geminicli-附件检索.png) |
-| **Reading PDF (Gemini CLI)**           |      ![Reading PDF](./IMG/geminicli-pdf读取.png)       |
 
 ---
 
@@ -300,7 +276,7 @@ Remove items from a collection without deleting them from the library. Params: `
 
 AI-powered semantic search using embedding vectors. Finds conceptually related content even without exact keyword matches.
 
-- `query` (required), `topK`, `minScore`, `language` (zh/en/all)
+- `query` (required), `topK`, `minScore`, `language` (en/all)
 
 #### `find_similar`
 
@@ -368,5 +344,3 @@ This project is licensed under the [MIT License](./LICENSE).
 - [Zotero](https://www.zotero.org/) - An excellent open-source reference management tool.
 - [Model Context Protocol](https://modelcontextprotocol.org/) - The protocol for AI tool integration.
 - [![Using Zotero Plugin Template](https://img.shields.io/badge/Using-Zotero%20Plugin%20Template-blue?style=flat-square&logo=github)](https://github.com/windingwind/zotero-plugin-template)
-  Contact us
-  ![Contact us](./IMG/0320.jpg)

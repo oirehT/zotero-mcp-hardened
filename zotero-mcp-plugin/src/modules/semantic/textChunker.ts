@@ -6,7 +6,7 @@
  * - Document structure detection (abstract, sections, references)
  * - Quality assessment and garbage filtering
  * - Sentence-level splitting with semantic boundaries
- * - Support for Chinese and English academic papers
+ * - Support for English academic papers
  */
 
 declare let ztoolkit: ZToolkit;
@@ -104,7 +104,7 @@ export class TextQualityPreprocessor {
       const trimmed = line.trim();
       if (trimmed.length === 0) return true; // Keep empty lines for structure
 
-      // Valid characters: Chinese + English letters + digits
+      // Valid characters: letters, CJK ideographs, and digits
       const validChars = (trimmed.match(/[a-zA-Z\u4e00-\u9fa5\d]/g) || []).length;
       const validRatio = validChars / trimmed.length;
 
@@ -164,7 +164,7 @@ export class TextQualityPreprocessor {
 
     const noSpace = text.replace(/\s/g, '');
 
-    // 1. Valid character ratio (Chinese + English)
+    // 1. Valid character ratio
     const validChars = (text.match(/[a-zA-Z\u4e00-\u9fa5]/g) || []).length;
     const validRatio = validChars / Math.max(1, noSpace.length);
     if (validRatio < 0.4) {
@@ -321,10 +321,10 @@ export class TextChunker {
       referencesStart: null
     };
 
-    // Detect abstract (Chinese and English)
+    // Detect abstract
     const abstractPatterns = [
-      /^(摘\s*要|Abstract|ABSTRACT)[：:\s]*\n?([\s\S]*?)(?=\n\s*\n|关键词|Keywords|Key\s*words|1\s*[\.、]|一[、．.]|Introduction|引言)/im,
-      /(摘\s*要|Abstract)[：:\s]*([\s\S]{50,800}?)(?=\n\s*\n)/im
+      /^(Abstract|ABSTRACT)[:\s]*\n?([\s\S]*?)(?=\n\s*\n|Keywords|Key\s*words|1\s*[.]|Introduction)/im,
+      /(Abstract)[:\s]*([\s\S]{50,800}?)(?=\n\s*\n)/im
     ];
 
     for (const pattern of abstractPatterns) {
@@ -339,7 +339,7 @@ export class TextChunker {
 
     // Detect keywords
     const keywordsMatch = text.match(
-      /^(关键词|Keywords|Key\s*words)[：:\s]*([\s\S]*?)(?=\n\s*\n|\n[一二三四五1-9])/im
+      /^(Keywords|Key\s*words)[:\s]*([\s\S]*?)(?=\n\s*\n|\n[1-9])/im
     );
     if (keywordsMatch) {
       structure.hasKeywords = true;
@@ -347,12 +347,8 @@ export class TextChunker {
       structure.keywordsEnd = keywordsMatch.index! + keywordsMatch[0].length;
     }
 
-    // Detect section headers (Chinese numbered, Arabic numbered, Markdown)
+    // Detect section headers (Arabic numbered, Markdown)
     const sectionPatterns: Array<{ pattern: RegExp; levelFn: (m: string) => number }> = [
-      {
-        pattern: /^([一二三四五六七八九十]+)[、.．]\s*(.{2,50})$/gm,
-        levelFn: () => 1
-      },
       {
         pattern: /^(\d+)[\.．]\s*(.{2,50})$/gm,
         levelFn: (m) => m.length === 1 ? 1 : 2
@@ -383,8 +379,8 @@ export class TextChunker {
 
     // Detect references section
     const refPatterns = [
-      /^(参考文献|References|Bibliography|REFERENCES)\s*$/im,
-      /\n(参考文献|References)\s*\n/i
+      /^(References|Bibliography|REFERENCES)\s*$/im,
+      /\n(References)\s*\n/i
     ];
     for (const pattern of refPatterns) {
       const match = text.match(pattern);
@@ -610,7 +606,7 @@ export class TextChunker {
   }
 
   /**
-   * Extract sentences (Chinese and English)
+   * Extract sentences
    */
   private extractSentences(text: string): string[] {
     // Split by sentence-ending punctuation
@@ -684,10 +680,8 @@ export class TextChunker {
   /**
    * Detect primary language
    */
-  detectLanguage(text: string): 'zh' | 'en' {
-    const chineseChars = (text.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
-    const totalChars = text.replace(/\s/g, '').length;
-    return totalChars > 0 && chineseChars / totalChars > 0.3 ? 'zh' : 'en';
+  detectLanguage(_text: string): 'en' {
+    return 'en';
   }
 }
 

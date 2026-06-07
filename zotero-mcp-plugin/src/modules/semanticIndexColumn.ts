@@ -11,7 +11,7 @@ import { config } from "../../package.json";
 let indexedItemsCache: Set<string> | null = null;
 let cacheTimestamp: number = 0;
 const CACHE_TTL_MS = 5000; // 5 seconds cache TTL
-let isRefreshing: boolean = false; // 防止并发刷新
+let isRefreshing: boolean = false; // Prevent concurrent refreshes
 
 // Registered column data key (false means registration failed)
 let registeredDataKey: string | false | null = null;
@@ -112,7 +112,7 @@ function getItemIndexStatus(itemKey: string): string {
  * Zotero calls dataProvider for each item in the tree simultaneously)
  */
 async function refreshCacheAsync(): Promise<void> {
-  if (isRefreshing) return; // 防止并发刷新风暴
+  if (isRefreshing) return; // Prevent concurrent refresh storms
   isRefreshing = true;
   try {
     const { getVectorStore } = require("./semantic/vectorStore");
