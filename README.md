@@ -12,16 +12,79 @@ Zotero MCP is an open-source project designed to integrate powerful AI capabilit
 
 ## Navigation
 
+- [Installation and Quick Start Guide](#installation-and-quick-start-guide)
 - [Security defaults](#security-defaults-in-this-hardened-fork)
 - [Project Overview](#project-overview)
 - [Project Structure](#project-structure)
-- [Quick Start Guide](#quick-start-guide)
 - [Developer Guide](#developer-guide)
 - [Features](#features)
 - [API Reference](#api-reference-mcp-tools)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
+
+---
+
+## Installation and Quick Start Guide
+
+This guide is intended to help general users quickly configure and use Zotero
+MCP, enabling your AI assistant to work seamlessly with your Zotero library.
+
+### 1. Installation (For General Users)
+
+**What is Zotero MCP?**
+
+Simply put, Zotero MCP is a bridge connecting your AI client (like Cherry
+Studio, Gemini CLI, Claude Desktop, etc.) and your local Zotero reference
+management software. It allows your AI assistant to directly search, query, and
+cite references from your Zotero library, greatly enhancing academic research
+and writing efficiency.
+
+**Two-Step Quick Start:**
+
+1.  **Install the Plugin**:
+    - Go to the project's
+      [Releases Page](https://github.com/oirehT/zotero-mcp-hardened/releases)
+      to download the latest `zotero-mcp-plugin-x.x.x.xpi` file.
+    - In Zotero, install the `.xpi` file via `Tools -> Add-ons`.
+    - Restart Zotero.
+
+2.  **Configure the Plugin**:
+    - In Zotero's `Preferences -> Zotero MCP Plugin` tab, configure your
+      connection settings:
+      - **Enable Server**: Start the integrated MCP server
+      - **Port**: Default is `23120` (you can change this if needed)
+      - **Generate Client Configuration**: Click this button to get
+        configuration for your AI client
+
+---
+
+### 2. Connect to AI Clients
+
+**Important**: The Zotero plugin now includes an **integrated MCP server** that
+uses the Streamable HTTP protocol. No separate server installation is needed.
+
+#### Streamable HTTP Connection
+
+The plugin uses Streamable HTTP, which enables real-time bidirectional
+communication with AI clients:
+
+1. **Enable Server** in the Zotero plugin preferences
+2. **Generate Client Configuration** by clicking the button in plugin
+   preferences
+3. **Copy the generated configuration** to your AI client
+
+#### Supported AI Clients
+
+- **Codex CLI**: Native HTTP MCP configuration
+- **Claude Code**: Native HTTP MCP configuration
+- **Claude Desktop**, **Cline**, **Continue.dev**, **Cursor**, **Chatbox**,
+  **Trae AI**, and **Qwen Code**: `mcp-remote` bridge configuration
+- **Cherry Studio** and **Gemini CLI**: Streamable HTTP configuration
+- **Custom implementations**: Generic HTTP MCP configuration
+
+For client-specific configuration instructions, generate the relevant client
+configuration from the Zotero plugin preferences.
 
 ---
 
@@ -60,55 +123,6 @@ AI Client ↔ Streamable HTTP ↔ Zotero Plugin (with integrated MCP server)
 ```
 
 This eliminates the need for a separate MCP server process, providing a more streamlined and efficient integration.
-
----
-
-## Quick Start Guide
-
-This guide is intended to help general users quickly configure and use Zotero MCP, enabling your AI assistant to work seamlessly with your Zotero library.
-
-### 1. Installation (For General Users)
-
-**What is Zotero MCP?**
-
-Simply put, Zotero MCP is a bridge connecting your AI client (like Cherry Studio, Gemini CLI, Claude Desktop, etc.) and your local Zotero reference management software. It allows your AI assistant to directly search, query, and cite references from your Zotero library, greatly enhancing academic research and writing efficiency.
-
-**Two-Step Quick Start:**
-
-1.  **Install the Plugin**:
-    - Go to the project's [Releases Page](https://github.com/oirehT/zotero-mcp-hardened/releases) to download the latest `zotero-mcp-plugin-x.x.x.xpi` file.
-    - In Zotero, install the `.xpi` file via `Tools -> Add-ons`.
-    - Restart Zotero.
-
-2.  **Configure the Plugin**:
-    - In Zotero's `Preferences -> Zotero MCP Plugin` tab, configure your connection settings:
-      - **Enable Server**: Start the integrated MCP server
-      - **Port**: Default is `23120` (you can change this if needed)
-      - **Generate Client Configuration**: Click this button to get configuration for your AI client
-
----
-
-### 2. Connect to AI Clients
-
-**Important**: The Zotero plugin now includes an **integrated MCP server** that uses the Streamable HTTP protocol. No separate server installation is needed.
-
-#### Streamable HTTP Connection
-
-The plugin uses Streamable HTTP, which enables real-time bidirectional communication with AI clients:
-
-1. **Enable Server** in the Zotero plugin preferences
-2. **Generate Client Configuration** by clicking the button in plugin preferences
-3. **Copy the generated configuration** to your AI client
-
-#### Supported AI Clients
-
-- **Codex CLI**: Native HTTP MCP configuration
-- **Claude Code**: Native HTTP MCP configuration
-- **Claude Desktop**, **Cline**, **Continue.dev**, **Cursor**, **Chatbox**, **Trae AI**, and **Qwen Code**: `mcp-remote` bridge configuration
-- **Cherry Studio** and **Gemini CLI**: Streamable HTTP configuration
-- **Custom implementations**: Generic HTTP MCP configuration
-
-For client-specific configuration instructions, generate the relevant client configuration from the Zotero plugin preferences.
 
 ---
 
